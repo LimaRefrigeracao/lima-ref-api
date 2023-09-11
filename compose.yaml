@@ -1,9 +1,20 @@
 services:
+  api:
+    build: .
+    ports:
+      - "3333:3333"
+    volumes:
+      - .:/api
+    environment:
+      - NODE_ENV=producion
+    depends_on:
+      - mysql
+  
   mysql:
     image: mysql:latest
     container_name: mysql
     environment:
       MYSQL_ROOT_PASSWORD: root
     ports:
-      - "3307:3306"
+      - "3306:3306"
 
