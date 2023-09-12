@@ -1,4 +1,5 @@
 const connection = require("./connection");
+const utilities = require("../utils/utils.js")
 
 const getAll = async () => {
   const [services] = await connection.execute("SELECT * FROM services WHERE warehouse_status = false");
@@ -8,9 +9,7 @@ const getAll = async () => {
 const create = async (service) => {
   const { product, client, telephone, adress, status, observation } = service;
 
-  const dateUTC = new Date(Date.now());
-  const dateCustom = { day: "2-digit", month: "2-digit", year: "numeric" };
-  const created_at = dateUTC.toLocaleDateString(undefined, dateCustom);
+  const created_at = utilities.generateDateLocale();
 
   /* Gerar registro no banco de ordens */
 
@@ -46,9 +45,7 @@ const update = async (id, service) => {
     observation,
   } = service;
   
-  const dateUTC = new Date(Date.now());
-  const dateCustom = { day: "2-digit", month: "2-digit", year: "numeric" };
-  const updated_at = dateUTC.toLocaleDateString(undefined, dateCustom);
+  const updated_at = utilities.generateDateLocale();
 
   const query =
     "UPDATE services SET product = ?, client = ?, telephone = ?, adress = ?, status = ?, payment_status = ?, observation = ?, updated_at = ? WHERE id = ?";
