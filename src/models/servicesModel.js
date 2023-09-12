@@ -1,29 +1,35 @@
 const connection = require("./connection");
 
 const getAll = async () => {
-  const [services] = await connection.execute("SELECT * FROM services");
+  const [services] = await connection.execute("SELECT * FROM services WHERE warehouse_status = false");
   return services;
 };
 
 const create = async (service) => {
-  const { product, client, telephone, adress, observation } = service;
+  const { product, client, telephone, adress, status, observation } = service;
 
   const dateUTC = new Date(Date.now());
   const dateCustom = { day: "2-digit", month: "2-digit", year: "numeric" };
   const created_at = dateUTC.toLocaleDateString(undefined, dateCustom);
 
+  /* Gerar registro no banco de ordens */
+
+  const order_of_service = 1
+
+
   const query =
-    "INSERT INTO services(product, client, telephone, adress, status, payment_status, observation, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+    "INSERT INTO services(product, client, telephone, adress, status, payment_status, observation, created_at, order_of_service) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
   const [created] = await connection.execute(query, [
     product,
     client,
     telephone,
     adress,
-    0,
+    status,
     0,
     observation,
     created_at,
+    order_of_service,
   ]);
 
   return { insertId: created.insertId };
