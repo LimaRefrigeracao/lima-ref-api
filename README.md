@@ -68,7 +68,7 @@ npx sequelize-cli db:migrate:schema:nome_da_nova_coluna:add
 
 ## Informações do APP
 
-### Status de Serviço
+#### Status de Serviço
 ```plaintext
 0. Visitar
 1. Buscar
@@ -82,7 +82,7 @@ npx sequelize-cli db:migrate:schema:nome_da_nova_coluna:add
 9. Devolver
 10. Concluído
 ```
-### Status de Pagamento
+#### Status de Pagamento
 ```plaintext
 0. Aberto
 1. Pendente
