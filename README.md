@@ -1,5 +1,7 @@
 # API Lima Refrigeração (https://lima-ref.onrender.com)
 
+### Estrutura do projeto
+
 lima-ref-api/
   |- .vscode
   |- src/
@@ -30,10 +32,15 @@ lima-ref-api/
   |- package.json
   |- README.md
 
-## Scripts (Dev)
-#### Iniciar container Docker
+## Scripts e Info (Dev)
+
+#### Iniciar container com o banco de dados
 ```sh
 docker compose up -d --build
+```
+#### Subir api localmente
+```sh
+npm run dev
 ```
 #### Cria uma nova migration 
 ```sh
@@ -51,6 +58,12 @@ npx sequelize-cli db:migrate:undo
 ```sh
 npx sequelize-cli db:migrate:schema:nome_da_nova_coluna:add
 ```
+
+#### Portas dos serviços
+APP - 3333
+POSTGRES - 5432
+ADMINER - 8080
+
 
 ### Status de Serviço
 0 - Visitar
