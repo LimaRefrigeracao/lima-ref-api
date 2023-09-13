@@ -1,4 +1,9 @@
 # API Lima Refrigeração
+meu-projeto/
+  |- src/
+  |   |- server.js   // Seu arquivo JavaScript principal
+  |
+  |- package.json
 
 ### Status de Serviço
 0 - Visitar

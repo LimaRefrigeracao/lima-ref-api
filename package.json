@@ -3,9 +3,13 @@
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
+  "engines": {
+    "node": "20"
+  },
   "scripts": {
-    "start": "node src/server.js",
-    "dev": "nodemon src/server.js"
+    "dev": "nodemon src/server.js",
+    "build": "npx babel src --out-dir dist",
+    "start": "node dist/server.js"
   },
   "author": "",
   "license": "ISC",
@@ -15,7 +19,11 @@
     "mysql2": "^3.6.1"
   },
   "devDependencies": {
+    "@babel/cli": "^7.22.15",
+    "@babel/core": "^7.22.17",
+    "@babel/preset-env": "^7.22.15",
     "eslint": "^8.49.0",
-    "nodemon": "^3.0.1"
+    "nodemon": "^3.0.1",
+    "typescript": "^5.2.2"
   }
 }
