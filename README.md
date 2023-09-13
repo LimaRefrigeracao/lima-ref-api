@@ -1,7 +1,8 @@
 # API Lima Refrigeração (https://lima-ref.onrender.com)
 
-### Estrutura do projeto
+- [Estrutura do Projeto]
 
+```plaintext
 lima-ref-api/
   |- .vscode
   |- src/
@@ -31,6 +32,7 @@ lima-ref-api/
   |- package-lock.json
   |- package.json
   |- README.md
+```
 
 ## Scripts e Info (Dev)
 
@@ -66,19 +68,19 @@ ADMINER - 8080
 
 
 ### Status de Serviço
-0 - Visitar
-1 - Buscar
-2 - Na Fila
-3 - Mexendo
-4 - Orçamentado
-5 - Autorizado
-6 - Testando
-7 - Pronto
-8 - Entregar
-9 - Devolver
-10 - Concluído
+0. Visitar
+1. Buscar
+2. Na Fila
+3. Mexendo
+4. Orçamentado
+5. Autorizado
+6. Testando
+7. Pronto
+8. Entregar
+9. Devolver
+10. Concluído
 
 ### Status de Pagamento
-0 - Aberto
-1 - Pendente
-2 - Pago
+0. Aberto
+1. Pendente
+2. Pago
