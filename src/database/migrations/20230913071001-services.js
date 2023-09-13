@@ -35,7 +35,8 @@ module.exports = {
         type: Sequelize.INTEGER,
       },
       warehouse_status: {
-        allowNull: false,
+        allowNull: true,
+        defaultValue: 0,
         type: Sequelize.BOOLEAN,
       },
       order_of_service: {
