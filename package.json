@@ -11,8 +11,7 @@
     "build": "npx babel src --out-dir dist",
     "start": "node dist/server.js",
     "migrate:create": "npx sequelize-cli db:migrate",
-    "migrate:revert": "npx sequelize-cli db:migrate:undo",
-    "migrate:full": "npx sequelize db:migrate:schema:timestamps:add && npx sequelize db:migrate"
+    "migrate:revert": "npx sequelize-cli db:migrate:undo"
   },
   "author": "",
   "license": "ISC",
