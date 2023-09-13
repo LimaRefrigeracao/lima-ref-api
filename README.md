@@ -62,12 +62,13 @@ npx sequelize-cli db:migrate:schema:nome_da_nova_coluna:add
 ```
 
 #### Portas dos serviços
-APP - 3333
-POSTGRES - 5432
-ADMINER - 8080
+- APP - 3333
+- POSTGRES - 5432
+- ADMINER - 8080
 
 
 ### Status de Serviço
+```plaintext
 0. Visitar
 1. Buscar
 2. Na Fila
@@ -79,8 +80,11 @@ ADMINER - 8080
 8. Entregar
 9. Devolver
 10. Concluído
+```
 
 ### Status de Pagamento
+```plaintext
 0. Aberto
 1. Pendente
 2. Pago
+```
