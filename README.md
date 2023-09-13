@@ -36,7 +36,10 @@ lima-ref-api/
 
 ## Scripts e Info (Dev)
 
-#### Iniciar container com o banco de dados
+- [Iniciar container com o banco de dados](```sh
+docker compose up -d --build
+```)
+#### 
 ```sh
 docker compose up -d --build
 ```
