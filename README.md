@@ -5,6 +5,11 @@ meu-projeto/
   |
   |- package.json
 
+## Ferramentas
+```sh
+npx sequelize-cli migration:generate --name nome_da_tabela
+```
+
 ### Status de Serviço
 0 - Visitar
 1 - Buscar
