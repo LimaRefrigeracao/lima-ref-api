@@ -1,9 +1,13 @@
 const connection = require("./connection");
-const utilities = require("../utils/utils.js")
+const utilities = require("../utils/utils.js");
 
 const getAll = async () => {
-  const [services] = await connection.execute("SELECT * FROM services WHERE warehouse_status = false");
-  return services;
+  const connect = await connection.connect();
+  const services = await connect.query(
+    "SELECT * FROM services WHERE warehouse_status = false"
+  );
+  connect.release();
+  return services.rows;
 };
 
 const create = async (service) => {
@@ -13,13 +17,12 @@ const create = async (service) => {
 
   /* Gerar registro no banco de ordens */
 
-  const order_of_service = 1
-
+  const order_of_service = 1;
 
   const query =
-    "INSERT INTO services(product, client, telephone, adress, status, payment_status, observation, created_at, order_of_service) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    "INSERT INTO services(product, client, telephone, adress, status, payment_status, observation, created_at, order_of_service) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)";
 
-  const [created] = await connection.execute(query, [
+  const values = [
     product,
     client,
     telephone,
@@ -29,9 +32,13 @@ const create = async (service) => {
     observation,
     created_at,
     order_of_service,
-  ]);
+  ];
 
-  return { insertId: created.insertId };
+  const connect = await connection.connect();
+  const created = await connect.query(query, values);
+  connect.release();
+
+  return created.rowCount;
 };
 
 const update = async (id, service) => {
@@ -44,13 +51,13 @@ const update = async (id, service) => {
     payment_status,
     observation,
   } = service;
-  
+
   const updated_at = utilities.generateDateLocale();
 
   const query =
-    "UPDATE services SET product = ?, client = ?, telephone = ?, adress = ?, status = ?, payment_status = ?, observation = ?, updated_at = ? WHERE id = ?";
+    "UPDATE services SET product = $1, client = $2, telephone = $3, adress = $4, status = $5, payment_status = $6, observation = $7, updated_at = $8 WHERE id = $9";
 
-  const [updated] = await connection.execute(query, [
+  const values = [
     product,
     client,
     telephone,
@@ -60,17 +67,21 @@ const update = async (id, service) => {
     observation,
     updated_at,
     id,
-  ]);
+  ];
+  const connect = await connection.connect();
+  const updated = await connect.query(query, values);
+  connect.release();
 
-  return updated;
+  return updated.rowCount;
 };
 
 const remove = async (id) => {
-  const [removed] = await connection.execute(
-    "DELETE FROM services WHERE id = ?",
-    [id]
-  );
-  return removed;
+  const connect = await connection.connect();
+  const removed = await connect.query("DELETE FROM services WHERE id = $1", [
+    id,
+  ]);
+  connect.release();
+  return removed.rowCount;
 };
 
 module.exports = {

@@ -1,20 +1,16 @@
 services:
-  api:
-    build: .
-    ports:
-      - "3333:3333"
-    volumes:
-      - .:/api
+  db:
+    image: postgres
+    restart: always
     environment:
-      - NODE_ENV=producion
-    depends_on:
-      - mysql
-  
-  mysql:
-    image: mysql:latest
-    container_name: mysql
-    environment:
-      MYSQL_ROOT_PASSWORD: root
+      POSTGRES_PASSWORD: root
+      POSTGRES_USER: root
+      POSTGRES_DB: limaref
     ports:
-      - "3306:3306"
-    #construir banco de dados
+      - 5432:5432
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
