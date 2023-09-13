@@ -1,6 +1,6 @@
 # API Lima Refrigeração (https://lima-ref.onrender.com)
 
-- [Estrutura do Projeto]
+- [ Estrutura do Projeto ]
 
 ```plaintext
 lima-ref-api/
@@ -36,12 +36,12 @@ lima-ref-api/
 
 ## Scripts e Info (Dev)
 
-- [Iniciar container com o banco de dados]
+- [ Iniciar container com o banco de dados ]
 #### 
 ```sh
 docker compose up -d --build
 ```
-- [Subir api localmente]
+- [ Subir api localmente ]
 ```sh
 npm run dev
 ```
@@ -49,19 +49,19 @@ npm run dev
 ```sh
 npx sequelize-cli migration:generate --name nome_da_tabela
 ```
-- [Constroi as novas tabelas]
+- [ Constroi as novas tabelas ]
 ```sh
 npx sequelize-cli db:migrate
 ```
-- [Reverte alterações nas tabelas]
+- [ Reverte alterações nas tabelas ]
 ```sh
 npx sequelize-cli db:migrate:undo
 ```
-- [Altera estruturas das tabelas]
+- [ Altera estruturas das tabelas ]
 ```sh
 npx sequelize-cli db:migrate:schema:nome_da_nova_coluna:add
 ```
-#### Portas dos serviços
+#### Portas em serviço
 ###### APP - 3333
 ###### POSTGRES - 5432
 ###### ADMINER - 8080
