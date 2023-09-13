@@ -1,13 +1,55 @@
-# API Lima Refrigeração
-meu-projeto/
-  |- src/
-  |   |- server.js   // Seu arquivo JavaScript principal
-  |
-  |- package.json
+# API Lima Refrigeração (https://lima-ref.onrender.com)
 
-## Ferramentas
+lima-ref-api/
+  |- .vscode
+  |- src/
+      |- controllers/
+          |- servicesController.js
+      |- database/
+          |- config/
+              |- config.js
+          |- migrations/
+              |- 20230913071001-services.js
+          |- seeders/
+      |- middlewares/
+          |- servicesMiddleware.js
+      |- models/
+          |- connection.js
+          |- servicesModel.js
+      |- utils/
+      |- app.js
+      |- router.js
+      |- server.js
+  |- .env.development
+  |- .eslintrc.json
+  |- .gitignore
+  |- .sequelizerc
+  |- babel.config.json
+  |- compose.yaml
+  |- package-lock.json
+  |- package.json
+  |- README.md
+
+## Scripts (Dev)
+#### Iniciar container Docker
+```sh
+docker compose up -d --build
+```
+#### Cria uma nova migration 
 ```sh
 npx sequelize-cli migration:generate --name nome_da_tabela
+```
+#### Constroi as novas tabelas
+```sh
+npx sequelize-cli db:migrate
+```
+#### Reverte alterações nas tabelas
+```sh
+npx sequelize-cli db:migrate:undo
+```
+#### Altera estruturas das tabelas
+```sh
+npx sequelize-cli db:migrate:schema:nome_da_nova_coluna:add
 ```
 
 ### Status de Serviço
