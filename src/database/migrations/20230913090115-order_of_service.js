@@ -8,20 +8,24 @@ module.exports = {
         primaryKey: true,
         autoIncrement: true,
         allowNull: false,
+        initialValue: 1000,
+        type: Sequelize.INTEGER,
+      },
+      cod_order: {
+        llowNull: false,
         type: Sequelize.INTEGER,
       },
       estimate: {
-        allowNull: false,
+        allowNull: true,
         type: Sequelize.TEXT,
       },
       value: {
-        allowNull: false,
+        allowNull: true,
         type: Sequelize.DECIMAL,
       },
       created_at: {
         allowNull: false,
-        type: Sequelize.DATE,
-        defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
+        type: Sequelize.STRING,
       },
     });
   },

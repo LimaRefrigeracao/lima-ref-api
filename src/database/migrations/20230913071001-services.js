@@ -34,14 +34,14 @@ module.exports = {
         allowNull: false,
         type: Sequelize.INTEGER,
       },
-      warehouse_status: {
-        allowNull: true,
-        defaultValue: 0,
-        type: Sequelize.BOOLEAN,
-      },
       order_of_service: {
         allowNull: false,
         type: Sequelize.INTEGER,
+      },
+      warehouse_status: {
+        allowNull: true,
+        defaultValue: false,
+        type: Sequelize.BOOLEAN,
       },
       observation: {
         allowNull: false,
