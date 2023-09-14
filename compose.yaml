@@ -1,4 +1,10 @@
 services:
+  api: 
+    build: .
+    restart: always
+    ports:
+      - 3333:3333
+    
   db:
     image: postgres
     restart: always
