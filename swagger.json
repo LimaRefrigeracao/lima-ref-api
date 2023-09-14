@@ -1,0 +1,179 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "API Lima Refrigeração",
+    "description": "Essa API é uma solução backend para a gestão dos serviços da empresa de refrigeração, Lima Refrigeração.",
+    "contact": {
+      "name": "DevX",
+      "email": "devx.contato@gmail.com"
+    },
+    "version": "0.0.1"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000",
+      "description": "API de Teste"
+    },
+    {
+      "url": "https://lima-ref.onrender.com",
+      "description": "API de Produção"
+    }
+  ],
+  "paths": {
+    "/services": {
+      "get": {
+        "summary": "Busca",
+        "tags": ["Services"],
+        "responses": {
+          "200": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "product",
+                    "client",
+                    "telephone",
+                    "status",
+                    "payment_status",
+                    "order_of_service",
+                    "created_at"
+                  ],
+                  "properties": {
+                    "id": {
+                      "type": "integer",
+                      "example": "4"
+                    },
+                    "product": {
+                      "type": "string"
+                    },
+                    "client": {
+                      "type": "string"
+                    },
+                    "telephone": {
+                      "type": "string"
+                    },
+                    "adress": {
+                      "type": "string"
+                    },
+                    "status": {
+                      "type": "integer"
+                    },
+                    "payment_status": {
+                      "type": "integer"
+                    },
+                    "warehouse_status": {
+                      "type": "integer"
+                    },
+                    "order_of_service": {
+                      "type": "integer"
+                    },
+                    "observation": {
+                      "type": "string"
+                    },
+                    "created_at": {
+                      "type": "string"
+                    },
+                    "updated_at": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Cadastro",
+        "tags": ["Services"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "product",
+                  "client",
+                  "telephone",
+                  "status"
+                ],
+                "properties": {
+                  "product": {
+                    "type": "string",
+                    "example": "2"
+                  },
+                  "client": {
+                    "type": "string",
+                    "example": "Pedro Pereira Lima"
+                  },
+                  "telephone": {
+                    "type": "string",
+                    "example": "(94)991964476"
+                  },
+                  "status": {
+                    "type": "integer",
+                    "example": "0"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+
+  "components": {
+    "schemas": {
+      "Service": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "product": {
+            "type": "string"
+          },
+          "client": {
+            "type": "string"
+          },
+          "telephone": {
+            "type": "string"
+          },
+          "adress": {
+            "type": "string"
+          },
+          "status": {
+            "type": "integer"
+          },
+          "payment_status": {
+            "type": "integer"
+          },
+          "warehouse_status": {
+            "type": "integer"
+          },
+          "order_of_service": {
+            "type": "integer"
+          },
+          "observation": {
+            "type": "string"
+          },
+          "created_at": {
+            "type": "string"
+          },
+          "updated_at": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "product",
+          "client",
+          "telephone",
+          "status"
+        ]
+      }
+    }
+  }
+}
