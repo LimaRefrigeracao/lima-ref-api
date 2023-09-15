@@ -1,7 +1,9 @@
 const generateDateLocale = () => {
   const dateUTC = new Date(Date.now());
-  const dateCustom = { day: "2-digit", month: "2-digit", year: "numeric" };
-  return dateUTC.toLocaleDateString(undefined, dateCustom);
+  const year = dateUTC.getFullYear();
+  const month = String(dateUTC.getMonth() + 1).padStart(2, "0");
+  const day = String(dateUTC.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
 };
 
 const generateUuid = () => {
