@@ -9,6 +9,7 @@
   "scripts": {
     "dev": "nodemon src/server.js",
     "build": "npx babel src --out-dir dist",
+    "start": "node dist/server.js",
     "migrate:create": "npx sequelize-cli db:migrate",
     "migrate:revert": "npx sequelize-cli db:migrate:undo"
   },
