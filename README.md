@@ -70,21 +70,21 @@ npx sequelize-cli db:migrate:schema:nome_da_nova_coluna:add
 
 #### Status de Serviço
 ```plaintext
-0. Visitar
-1. Buscar
-2. Na Fila
-3. Mexendo
-4. Orçamentado
-5. Autorizado
-6. Testando
-7. Pronto
-8. Entregar
-9. Devolver
-10. Concluído
+1. Visitar
+2. Buscar
+3. Na Fila
+4. Mexendo
+5. Orçamentado
+6. Autorizado
+7. Testando
+8. Pronto
+9. Entregar
+10. Devolver
+11. Concluído
 ```
 #### Status de Pagamento
 ```plaintext
-0. Aberto
-1. Pendente
-2. Pago
+1. Aberto
+2. Pendente
+3. Pago
 ```
