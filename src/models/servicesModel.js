@@ -35,7 +35,7 @@ const create = async (service) => {
     telephone,
     adress,
     status,
-    0,
+    1,
     order_of_service,
     observation,
     created_at,
