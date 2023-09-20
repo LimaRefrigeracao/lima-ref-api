@@ -21,15 +21,26 @@ const updateWarehouse = async (req, res) => {
   return res.status(204).json();
 };
 
-const update = async(req, res) => {
+const updateInfoClient = async(req, res) => {
   const { id } = req.params;
-  await servicesModel.update(id, req.body);
+  await servicesModel.updateInfoClient(id, req.body);
   return res.status(204).json(); 
 }
 
+const updateStatusService = async (req, res) => {
+  const { id, status } = req.params;
+  await servicesModel.updateStatusService(id, status);
+  return res.status(204).json();
+};
+
+const updateStatusPayment = async (req, res) => {
+  const { id, status } = req.params;
+  await servicesModel.updateStatusPayment(id, status);
+  return res.status(204).json();
+};
+
 const remove = async (req, res) => {
   const { id } = req.params;
-
   await servicesModel.remove(id);
   return res.status(204).json();
 };
@@ -39,5 +50,8 @@ module.exports = {
   getAllWharehouse,
   create,
   updateWarehouse,
+  updateInfoClient,
+  updateStatusService,
+  updateStatusPayment,
   remove,
 };

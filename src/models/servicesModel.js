@@ -48,7 +48,7 @@ const create = async (service) => {
   if (created.rowCount) {
     await orders.create(order_of_service, created_at);
   }
-  
+
   return created.rowCount;
 };
 
@@ -56,7 +56,7 @@ const updateWarehouse = async (id, value) => {
   const created_at_warehouse = utilities.generateDateLocale();
   let warehouse_status = null;
 
-  if (value === 'false') {
+  if (value === "false") {
     warehouse_status = true;
   } else {
     warehouse_status = false;
@@ -71,35 +71,43 @@ const updateWarehouse = async (id, value) => {
   connect.release();
 
   return updated.rowCount;
-}
+};
 
-const update = async (id, service) => {
-  const {
-    product,
-    client,
-    telephone,
-    adress,
-    status,
-    payment_status,
-    observation,
-  } = service;
-
-  const updated_at = utilities.generateDateLocale();
+const updateInfoClient = async (id, info) => {
+  const { product, client, telephone, adress, observation } = info;
 
   const query =
-    "UPDATE services SET product = $1, client = $2, telephone = $3, adress = $4, status = $5, payment_status = $6, observation = $7, updated_at = $8 WHERE id = $9";
+    "UPDATE services SET product = $1, client = $2, telephone = $3, adress = $4, observation = $5 WHERE id = $6";
 
-  const values = [
-    product,
-    client,
-    telephone,
-    adress,
-    status,
-    payment_status,
-    observation,
-    updated_at,
-    id,
-  ];
+  const values = [product, client, telephone, adress, observation, id];
+  const connect = await connection.connect();
+  const updated = await connect.query(query, values);
+  connect.release();
+
+  return updated.rowCount;
+};
+
+const updateStatusService = async (id, status) => {
+  const updated_at_service = utilities.generateDateLocale();
+
+  const query =
+    "UPDATE services SET status = $1, updated_at_service = $2 WHERE id = $3";
+
+  const values = [status, updated_at_service, id];
+  const connect = await connection.connect();
+  const updated = await connect.query(query, values);
+  connect.release();
+
+  return updated.rowCount;
+};
+
+const updateStatusPayment = async (id, status) => {
+  const updated_at_payment = utilities.generateDateLocale();
+
+  const query =
+    "UPDATE services SET payment_status = $1, updated_at_payment = $2 WHERE id = $3";
+
+  const values = [status, updated_at_payment, id];
   const connect = await connection.connect();
   const updated = await connect.query(query, values);
   connect.release();
@@ -121,5 +129,8 @@ module.exports = {
   getAllWharehouse,
   create,
   updateWarehouse,
+  updateInfoClient,
+  updateStatusService,
+  updateStatusPayment,
   remove,
 };

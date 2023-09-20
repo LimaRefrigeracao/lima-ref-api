@@ -17,7 +17,7 @@ const validateCreate = (req, res, next) => {
   next();
 };
 
-const validateUpdate = (req, res, next) => {
+const validateUpdateInfoClient = (req, res, next) => {
   const { body } = req;
 
   if (typeof body.product === "undefined" || body.product === "") {
@@ -29,20 +29,11 @@ const validateUpdate = (req, res, next) => {
   if (typeof body.telephone === "undefined" || body.telephone === "") {
     res.status(400).json({ msg: 'Campo "Telefone" é obrigatório.' });
   }
-  if (typeof body.status === "undefined" || body.status === "") {
-    res.status(400).json({ msg: 'Campo "Situação" é obrigatório.' });
-  }
-  if (
-    typeof body.payment_status === "undefined" ||
-    body.payment_status === ""
-  ) {
-    res.status(400).json({ msg: 'Campo "Situação de Pagamento" é obrigatório.' });
-  }
 
   next();
 };
 
 module.exports = {
   validateCreate,
-  validateUpdate,
+  validateUpdateInfoClient,
 };

@@ -19,6 +19,19 @@ router.post(
 );
 
 router.put("/services/warehouse/:id/:value", servicesController.updateWarehouse);
+router.put(
+  "/services/info/client/:id",
+  servicesMiddleware.validateUpdateInfoClient,
+  servicesController.updateInfoClient
+);
+router.put(
+  "/services/status/:id/:status",
+  servicesController.updateStatusService
+);
+router.put(
+  "/services/status/payment/:id/:status",
+  servicesController.updateStatusPayment
+);
 
 router.delete("/services/:id", servicesController.remove);
 
