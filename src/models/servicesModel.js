@@ -5,7 +5,16 @@ const orders = require("./orderOfServiceModel");
 const getAll = async () => {
   const connect = await connection.connect();
   const services = await connect.query(
-    "SELECT * FROM services WHERE warehouse_status = false"
+    "SELECT * FROM services WHERE warehouse_status = false ORDER BY id DESC"
+  );
+  connect.release();
+  return services.rows;
+};
+
+const getAllWharehouse = async () => {
+  const connect = await connection.connect();
+  const services = await connect.query(
+    "SELECT * FROM services WHERE warehouse_status = true ORDER BY created_at_warehouse DESC"
   );
   connect.release();
   return services.rows;
@@ -42,6 +51,27 @@ const create = async (service) => {
   
   return created.rowCount;
 };
+
+const updateWarehouse = async (id, value) => {
+  const created_at_warehouse = utilities.generateDateLocale();
+  let warehouse_status = null;
+
+  if (value === 'false') {
+    warehouse_status = true;
+  } else {
+    warehouse_status = false;
+  }
+
+  const query =
+    "UPDATE services SET warehouse_status = $1, created_at_warehouse = $2 WHERE id = $3";
+
+  const values = [warehouse_status, created_at_warehouse, id];
+  const connect = await connection.connect();
+  const updated = await connect.query(query, values);
+  connect.release();
+
+  return updated.rowCount;
+}
 
 const update = async (id, service) => {
   const {
@@ -88,7 +118,8 @@ const remove = async (id) => {
 
 module.exports = {
   getAll,
+  getAllWharehouse,
   create,
-  update,
+  updateWarehouse,
   remove,
 };

@@ -44,14 +44,22 @@ module.exports = {
         type: Sequelize.BOOLEAN,
       },
       observation: {
-        allowNull: false,
+        allowNull: true,
         type: Sequelize.STRING,
       },
       created_at: {
         allowNull: false,
         type: Sequelize.STRING,
       },
-      updated_at: {
+      created_at_warehouse: {
+        allowNull: true,
+        type: Sequelize.STRING,
+      },
+      updated_at_service: {
+        allowNull: true,
+        type: Sequelize.STRING,
+      },
+      updated_at_payment: {
         allowNull: true,
         type: Sequelize.STRING,
       },
