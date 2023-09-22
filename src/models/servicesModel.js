@@ -121,6 +121,11 @@ const remove = async (id) => {
     id,
   ]);
   connect.release();
+
+  if (removed.rowCount) {
+    await orders.remove(id);
+  }
+  
   return removed.rowCount;
 };
 
