@@ -41,7 +41,7 @@ router.put(
   orderOfServiceController.updateEstimate
 );
 
-router.delete("/services/:id", servicesController.remove);
+router.delete("/services/:id/:cod", servicesController.remove);
 router.delete("/order_of_service/estimate/:cod/:idEstimate", orderOfServiceController.removeEstimate);
 
 module.exports = router;

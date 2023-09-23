@@ -115,7 +115,7 @@ const updateStatusPayment = async (id, status) => {
   return updated.rowCount;
 };
 
-const remove = async (id) => {
+const remove = async (id, cod_order) => {
   const connect = await connection.connect();
   const removed = await connect.query("DELETE FROM services WHERE id = $1", [
     id,
@@ -123,7 +123,7 @@ const remove = async (id) => {
   connect.release();
 
   if (removed.rowCount) {
-    await orders.remove(id);
+    await orders.remove(cod_order);
   }
   
   return removed.rowCount;

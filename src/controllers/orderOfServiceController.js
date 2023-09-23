@@ -12,6 +12,8 @@ const updateEstimate = async (req, res) => {
   const getOrderValue = await orderOfServiceModel.getUnique(cod);
   const id = utilities.generateUuid();
   let estimateArray = null;
+  let totalPrice = 0;
+
   estimateArray = JSON.parse(getOrderValue[0].estimate) || [];
   const newRecord = {
     id: id,
@@ -20,9 +22,13 @@ const updateEstimate = async (req, res) => {
     price: req.body.price,
   };
   estimateArray.push(newRecord);
+  for (const record of estimateArray) {
+    totalPrice += record.price;
+  }
   estimateArray = JSON.stringify(estimateArray);
   const order_of_service = await orderOfServiceModel.updateEstimate(
     estimateArray,
+    totalPrice,
     cod
   );
   return res.status(200).json(order_of_service);

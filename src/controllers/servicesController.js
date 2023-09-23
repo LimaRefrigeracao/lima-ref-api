@@ -40,8 +40,8 @@ const updateStatusPayment = async (req, res) => {
 };
 
 const remove = async (req, res) => {
-  const { id } = req.params;
-  await servicesModel.remove(id);
+  const { id, cod } = req.params;
+  await servicesModel.remove(id, cod);
   return res.status(204).json();
 };
 
