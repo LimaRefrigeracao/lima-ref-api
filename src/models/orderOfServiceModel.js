@@ -10,15 +10,6 @@ const getUnique = async (cod) => {
   return order_of_service.rows;
 };
 
-const getCountRows = async (cod) => {
-  const connect = await connection.connect();
-  const order_of_service = await connect.query(
-    `SELECT * FROM order_of_service WHERE cod_order = ${cod}`
-  );
-  connect.release();
-  return order_of_service.rowCount;
-};
-
 const create = async (cod_order, created_at) => {
   const query =
     "INSERT INTO order_of_service(cod_order, created_at) VALUES ($1, $2)";
@@ -33,13 +24,14 @@ const create = async (cod_order, created_at) => {
 };
 
 const removeEstimate = async (cod, idEstimate) => {
-  const getOrderValue = await orderOfServiceModel.getUnique(cod);
-  const estimateArray = JSON.parse(getOrderValue[0].estimate);
-  const indexToRemove = idEstimate - 1;
-  const newArray = estimateArray.filter(
-    (element, index) => index !== indexToRemove
+  const getOrderValue = await getUnique(cod);
+  let estimateArray = JSON.parse(getOrderValue[0].estimate);
+  const indexToRemove = estimateArray.findIndex(
+    (element) => element.id === idEstimate
   );
-  estimateArray = JSON.stringify(newArray);
+
+  estimateArray.splice(indexToRemove, 1);
+  estimateArray = JSON.stringify(estimateArray);
   const query =
     "UPDATE order_of_service SET estimate = $1 WHERE cod_order = $2";
 
@@ -70,5 +62,4 @@ module.exports = {
   create,
   removeEstimate,
   updateEstimate,
-  getCountRows,
 };

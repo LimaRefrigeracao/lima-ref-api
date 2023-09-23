@@ -1,4 +1,5 @@
 const orderOfServiceModel = require("../models/orderOfServiceModel");
+const utilities = require("../utils/utils.js");
 
 const getUnique = async (req, res) => {
   const { cod } = req.params;
@@ -9,14 +10,9 @@ const getUnique = async (req, res) => {
 const updateEstimate = async (req, res) => {
   const { cod } = req.params;
   const getOrderValue = await orderOfServiceModel.getUnique(cod);
-  let id = null;
+  const id = utilities.generateUuid();
   let estimateArray = null;
   estimateArray = JSON.parse(getOrderValue[0].estimate) || [];
-  if (estimateArray.length > 0) {
-    id = estimateArray.length + 1;
-  } else {
-    id = 1;
-  }
   const newRecord = {
     id: id,
     amount: req.body.amount,
@@ -34,8 +30,8 @@ const updateEstimate = async (req, res) => {
 
 const removeEstimate = async (req, res) => {
   const { cod, idEstimate } = req.params;
-  await orderOfServiceModel.removeEstimate(cod, idEstimate);
-  return res.status(204).json();
+  const order_of_service = await orderOfServiceModel.removeEstimate(cod, idEstimate);
+  return res.status(204).json(order_of_service);
 };
 
 
