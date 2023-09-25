@@ -1,8 +1,5 @@
 const express = require("express") 
 const router = express.Router() 
-const bcrypt = require("bcrypt") 
-const jwt = require("jsonwebtoken") 
-
 
 const swaggerUi = require("swagger-ui-express") 
 const swaggerDocument = require("../swagger.json") 
