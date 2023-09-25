@@ -23,8 +23,8 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING,
       },
-      remember: {
-        allowNull: false,
+      admin: {
+        allowNull: true,
         defaultValue: false,
         type: Sequelize.BOOLEAN,
       },

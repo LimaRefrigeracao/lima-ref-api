@@ -19,44 +19,65 @@ router.post(
   usersController.login
 );
 
+const authMiddleware = require("./middlewares/authMiddleware")
+
 const servicesController = require("./controllers/servicesController");
 const servicesMiddleware = require("./middlewares/servicesMiddleware");
-router.get("/services", servicesController.getAll);
-router.get("/services/warehouse", servicesController.getAllWharehouse);
+router.get("/services", authMiddleware.authToken, servicesController.getAll);
+router.get(
+  "/services/warehouse",
+  authMiddleware.authToken,
+  servicesController.getAllWharehouse
+);
 router.post(
   "/services",
+  authMiddleware.authToken,
   servicesMiddleware.validateCreate,
   servicesController.create
 );
 router.put(
   "/services/warehouse/:id/:value",
+  authMiddleware.authToken,
   servicesController.updateWarehouse
 );
 router.put(
   "/services/info/client/:id",
+  authMiddleware.authToken,
   servicesMiddleware.validateUpdateInfoClient,
   servicesController.updateInfoClient
 );
 router.put(
   "/services/status/:id/:status",
+  authMiddleware.authToken,
   servicesController.updateStatusService
 );
 router.put(
   "/services/status/payment/:id/:status",
+  authMiddleware.authToken,
   servicesController.updateStatusPayment
 );
-router.delete("/services/:id/:cod", servicesController.remove);
+router.delete(
+  "/services/:id/:cod",
+  authMiddleware.authToken,
+  servicesController.remove
+);
 
 const orderOfServiceController = require("./controllers/orderOfServiceController");
 const orderOfServiceMiddleware = require("./middlewares/orderOfServiceMiddleware");
-router.get("/order_of_service/:cod", orderOfServiceController.getUnique);
+router.get(
+  "/order_of_service/:cod",
+  authMiddleware.authToken,
+  orderOfServiceController.getUnique
+);
 router.put(
   "/order_of_service/estimate/:cod",
+  authMiddleware.authToken,
   orderOfServiceMiddleware.validateUpdateEstimate,
   orderOfServiceController.updateEstimate
 );
 router.delete(
   "/order_of_service/estimate/:cod/:idEstimate",
+  authMiddleware.authToken,
   orderOfServiceController.removeEstimate
 );
 

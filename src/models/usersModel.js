@@ -20,7 +20,7 @@ const checkUsersExists = async (email, username) => {
 const register = async (request) => {
   const { username, email, passwordHash } = request;
   const query =
-    "INSERT INTO users (username, email, password) VALUES ($1, $2, $3, $4)";
+    "INSERT INTO users (username, email, password) VALUES ($1, $2, $3)";
 
   const values = [username, email, passwordHash];
 
@@ -32,7 +32,7 @@ const register = async (request) => {
 };
 
 const login = async (request) => {
-  const { username, password, remember } = request;
+  const { username, password } = request;
   const query = "SELECT * FROM users WHERE username = $1";
 
   const value = [username];
@@ -52,17 +52,27 @@ const login = async (request) => {
   return user.rows[0];
 };
 
-const signToken = async (idUser) => {
-    const secret = process.env.SECRET;
+const signToken = async (remember, user) => {
+  let expiration = "";
 
-    const token = jwt.sign(
-      {
-        id: idUser,
-      },
-      secret
-    );
+  if (remember == true) {
+    expiration = "6d";
+  } else {
+    expiration = "1d";
+  }
 
-    return token;
+  const secret = process.env.SECRET;
+
+  const token = jwt.sign(
+    {
+      id: user.id,
+      admin: user.admin,
+    },
+    secret,
+    { expiresIn: expiration }
+  );
+
+  return token;
 };
 
 module.exports = {
