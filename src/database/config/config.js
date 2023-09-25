@@ -14,6 +14,10 @@ module.exports = {
     dialectOptions: {
       bigNumberStrings: true,
     },
-    url: `${process.env.DATABASE_URL}`,
+    username: "limaref_26w1_user",
+    password: "TOYnABMXqIGQuySmzwUFgw4kDNW03Ywg",
+    database: "limaref_26w1",
+    host: "dpg-ck8knmnsasqs739mdp9g-a",
+    port: 5432,
   },
-} 
+}; 
