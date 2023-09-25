@@ -8,9 +8,6 @@ const validateRegister = (req, res, next) => {
     res.status(400).json({ msg: 'Campo "Email" é obrigatório.' });
   }
 
-  if (typeof body.remember === "undefined" || body.remember === "") {
-    res.status(400).json({ msg: 'Campo "Lembre-me" é obrigatório.' });
-  }
   if (typeof body.password === "undefined" || body.password === "") {
     res.status(400).json({ msg: 'Campo "Senha" é obrigatório.' }) 
   }

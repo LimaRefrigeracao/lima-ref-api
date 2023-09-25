@@ -2,7 +2,7 @@ const usersModel = require("../models/usersModel");
 const bcrypt = require("bcrypt");
 
 const register = async (req, res) => {
-  const { username, email, password, remember } = req.body;
+  const { username, email, password } = req.body;
 
   const checkExists = await usersModel.checkUsersExists(email, username);
 
@@ -20,10 +20,10 @@ const register = async (req, res) => {
     const salt = await bcrypt.genSalt(12);
     const passwordHash = await bcrypt.hash(password, salt);
 
-    const dataUser = { username, email, passwordHash, remember };
+    const dataUser = { username, email, passwordHash };
 
     try {
-      await usersModel.register(dataUser);
+      const register = await usersModel.register(dataUser);
       return res.status(200).json(register);
     } catch (error) {
       return res.status(500).json({ msg: "Erro ao tentar registrar usuário." });
@@ -31,6 +31,28 @@ const register = async (req, res) => {
   }
 };
 
+const login = async (req, res) => {
+  try {
+    const login = await usersModel.login(req.body);
+
+    if (login === false) {
+      return res
+        .status(404)
+        .json({ msg: "Nome de usuário ou Senha incorreta." });
+    } else {
+      try {
+        const token = await usersModel.signToken(login.id);
+        return res.status(200).json({ token: token});
+      } catch (error) {
+        return res.status(500).json({ msg: "Erro na assinatura do token" });
+      }
+    }
+  } catch (error) {
+    return res.status(404).json({ msg: "Erro ao tentar realizar login." });
+  }
+};
+
 module.exports = {
   register,
+  login,
 };

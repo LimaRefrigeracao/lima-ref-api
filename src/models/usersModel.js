@@ -1,4 +1,6 @@
 const connection = require("./connection");
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 const checkUsersExists = async (email, username) => {
   const queryEmail = "SELECT * FROM users WHERE email = $1";
@@ -16,11 +18,11 @@ const checkUsersExists = async (email, username) => {
 };
 
 const register = async (request) => {
-  const { username, email, passwordHash, remember } = request;
+  const { username, email, passwordHash } = request;
   const query =
-    "INSERT INTO users (username, email, password, remember) VALUES ($1, $2, $3, $4)";
+    "INSERT INTO users (username, email, password) VALUES ($1, $2, $3, $4)";
 
-  const values = [username, email, passwordHash, remember];
+  const values = [username, email, passwordHash];
 
   const connect = await connection.connect();
   const created = await connect.query(query, values);
@@ -30,19 +32,42 @@ const register = async (request) => {
 };
 
 const login = async (request) => {
-  const query = "INSERT INTO users(cod_order, created_at) VALUES ($1, $2)";
+  const { username, password, remember } = request;
+  const query = "SELECT * FROM users WHERE username = $1";
 
-  const values = [cod_order, created_at];
-
+  const value = [username];
   const connect = await connection.connect();
-  const created = await connect.query(query, values);
+  const user = await connect.query(query, value);
+
   connect.release();
 
-  return created.rowCount;
+  if (!user.rows[0]) {
+    return false;
+  }
+  const checkPassword = await bcrypt.compare(password, user.rows[0].password);
+  if (!checkPassword) {
+    return false;
+  }
+
+  return user.rows[0];
+};
+
+const signToken = async (idUser) => {
+    const secret = process.env.SECRET;
+
+    const token = jwt.sign(
+      {
+        id: idUser,
+      },
+      secret
+    );
+
+    return token;
 };
 
 module.exports = {
   checkUsersExists,
   register,
   login,
+  signToken,
 };
