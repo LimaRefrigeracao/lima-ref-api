@@ -7,13 +7,13 @@ module.exports = {
     dialectOptions: {
       bigNumberStrings: true,
     },
-    url: `${process.env.DATABASE_URL}`,
+    url: process.env.DATABASE_URL,
   },
   production: {
     dialect: "postgres",
     dialectOptions: {
       bigNumberStrings: true,
     },
-    url: `${process.env.DATABASE_URL}`,
+    url: process.env.DATABASE_URL,
   },
 } 
