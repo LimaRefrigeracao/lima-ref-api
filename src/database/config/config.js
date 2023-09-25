@@ -1,5 +1,5 @@
-const fs = require("fs");
-require("dotenv").config();
+const fs = require("fs") 
+require("dotenv").config() 
 
 module.exports = {
   development: {
@@ -16,4 +16,4 @@ module.exports = {
     },
     url: `${process.env.DATABASE_URL}`,
   },
-};
+} 
