@@ -14,6 +14,6 @@ module.exports = {
     dialectOptions: {
       bigNumberStrings: true,
     },
-    use_env_variable: "DATABASE_URL",
+    url: `${process.env.DATABASE_URL}`,
   },
-}; 
+} 
