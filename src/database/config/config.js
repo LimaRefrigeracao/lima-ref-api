@@ -13,7 +13,8 @@ module.exports = {
     dialect: "postgres",
     dialectOptions: {
       bigNumberStrings: true,
+      ssl: true,
     },
     url: process.env.DATABASE_URL,
   },
-} 
+}; 
