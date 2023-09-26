@@ -8,11 +8,11 @@ module.exports = {
         primaryKey: true,
         autoIncrement: true,
         allowNull: false,
-        initialValue: 1000,
         type: Sequelize.INTEGER,
       },
       cod_order: {
-        llowNull: false,
+        allowNull: false,
+        autoIncrement: true,
         type: Sequelize.INTEGER,
       },
       estimate: {
@@ -27,7 +27,7 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING,
       },
-    }) 
+    }); 
   },
 
   async down (queryInterface, Sequelize) {

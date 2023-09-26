@@ -65,6 +65,11 @@ router.delete(
 const orderOfServiceController = require("./controllers/orderOfServiceController");
 const orderOfServiceMiddleware = require("./middlewares/orderOfServiceMiddleware");
 router.get(
+  "/order_of_service/",
+  authMiddleware.authToken,
+  orderOfServiceController.getAll
+);
+router.get(
   "/order_of_service/:cod",
   authMiddleware.authToken,
   orderOfServiceController.getUnique

@@ -1,6 +1,15 @@
 const connection = require("./connection") 
 const utilities = require("../utils/utils.js") 
 
+const getAll = async () => {
+  const connect = await connection.connect();
+  const order_of_service = await connect.query(
+    `SELECT * FROM order_of_service`
+  );
+  connect.release();
+  return order_of_service.rows;
+}; 
+
 const getUnique = async (cod) => {
   const connect = await connection.connect() 
   const order_of_service = await connect.query(
@@ -10,17 +19,17 @@ const getUnique = async (cod) => {
   return order_of_service.rows 
 } 
 
-const create = async (cod_order, created_at) => {
+const create = async (created_at) => {
   const query =
-    "INSERT INTO order_of_service(cod_order, created_at) VALUES ($1, $2)" 
+    "INSERT INTO order_of_service(created_at) VALUES ($1) RETURNING cod_order"; 
 
-  const values = [cod_order, created_at] 
+  const values = [created_at] 
 
   const connect = await connection.connect() 
   const created = await connect.query(query, values) 
   connect.release() 
 
-  return created.rowCount 
+  return created.rows[0].cod_order 
 } 
 
 const removeEstimate = async (cod, idEstimate) => {
@@ -70,6 +79,7 @@ const remove = async (cod_order) => {
 } 
 
 module.exports = {
+  getAll,
   getUnique,
   create,
   removeEstimate,

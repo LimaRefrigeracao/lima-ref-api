@@ -1,6 +1,12 @@
 const orderOfServiceModel = require("../models/orderOfServiceModel") 
 const utilities = require("../utils/utils.js") 
 
+const getAll = async (req, res) => {
+  const order_of_service = await orderOfServiceModel.getAll();
+  return res.status(200).json(order_of_service);
+}; 
+
+
 const getUnique = async (req, res) => {
   const { cod } = req.params 
   const order_of_service = await orderOfServiceModel.getUnique(cod) 
@@ -42,6 +48,7 @@ const removeEstimate = async (req, res) => {
 
 
 module.exports = {
+  getAll,
   getUnique,
   updateEstimate,
   removeEstimate,
