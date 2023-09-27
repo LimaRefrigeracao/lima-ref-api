@@ -6,6 +6,13 @@ const generateDateLocale = () => {
   return `${year}-${month}-${day}` 
 } 
 
+const generateUuid = () => {
+  const { v4: uuidv4 } = require("uuid");
+  const uuid = uuidv4();
+  return uuid;
+}; 
+
 module.exports = {
   generateDateLocale,
-} 
+  generateUuid,
+}; 
