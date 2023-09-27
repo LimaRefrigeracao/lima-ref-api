@@ -5,6 +5,11 @@ const getAll = async (_req, res) => {
   return res.status(200).json(services) 
 } 
 
+const getFinished = async (_req, res) => {
+  const services = await servicesModel.getFinished();
+  return res.status(200).json(services);
+}; 
+
 const getAllWharehouse = async (_req, res) => {
   const services = await servicesModel.getAllWharehouse() 
   return res.status(200).json(services) 
@@ -47,6 +52,7 @@ const remove = async (req, res) => {
 
 module.exports = {
   getAll,
+  getFinished,
   getAllWharehouse,
   create,
   updateWarehouse,

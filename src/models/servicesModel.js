@@ -12,7 +12,16 @@ const reloadSocketData = async () => {
 const getAll = async () => {
   const connect = await connection.connect();
   const services = await connect.query(
-    "SELECT * FROM services WHERE warehouse_status = false ORDER BY id DESC"
+    "SELECT * FROM services WHERE warehouse_status = false AND status < 13 AND payment_status < 3  ORDER BY id DESC"
+  );
+  connect.release();
+  return services.rows;
+};
+
+const getFinished = async () => {
+  const connect = await connection.connect();
+  const services = await connect.query(
+    "SELECT * FROM services WHERE status = 13 AND payment_status = 3 ORDER BY id DESC"
   );
   connect.release();
   return services.rows;
@@ -143,6 +152,7 @@ const remove = async (id, cod_order) => {
 module.exports = {
   reloadSocketData,
   getAll,
+  getFinished,
   getAllWharehouse,
   create,
   updateWarehouse,
