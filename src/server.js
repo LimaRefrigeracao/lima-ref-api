@@ -1,5 +1,9 @@
-const app = require("./app") 
-require("dotenv").config() 
-const PORT = process.env.PORT || 3333 
+const { server } = require("./app");
+require("dotenv").config();
+require("./socket");
 
-app.listen(PORT, () => console.log(`http://localhost:${PORT}`)) 
+const PORT = process.env.PORT || 3333;
+
+server.listen(PORT, () =>
+  console.log(`Servidor Http em: http://localhost:${PORT}`)
+);

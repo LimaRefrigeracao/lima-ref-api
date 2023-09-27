@@ -2,6 +2,13 @@ const connection = require("./connection");
 const utilities = require("../utils/utils.js");
 const orders = require("./orderOfServiceModel");
 
+const reloadSocketData = async () => {
+  const data = await getAll();
+  const { io } = require("../app");
+  io.emit("reloadDataService", data);
+  return true;
+};
+
 const getAll = async () => {
   const connect = await connection.connect();
   const services = await connect.query(
@@ -46,6 +53,8 @@ const create = async (service) => {
     const created = await connect.query(query, values);
     connect.release();
 
+    await reloadSocketData();
+
     return created.rowCount;
   } else {
     return false;
@@ -69,7 +78,7 @@ const updateWarehouse = async (id, value) => {
   const connect = await connection.connect();
   const updated = await connect.query(query, values);
   connect.release();
-
+  await reloadSocketData();
   return updated.rowCount;
 };
 
@@ -83,7 +92,7 @@ const updateInfoClient = async (id, info) => {
   const connect = await connection.connect();
   const updated = await connect.query(query, values);
   connect.release();
-
+  await reloadSocketData();
   return updated.rowCount;
 };
 
@@ -91,12 +100,14 @@ const updateStatusService = async (id, status) => {
   const updated_at_service = utilities.generateDateLocale();
 
   const query =
-    "UPDATE services SET status = $1, updated_at_service = $2 WHERE id = $3";
+    "UPDATE services SET status = $1, updated_at_service = $2 WHERE id = $3 RETURNING id, status";
 
   const values = [status, updated_at_service, id];
   const connect = await connection.connect();
   const updated = await connect.query(query, values);
   connect.release();
+
+  await reloadSocketData();
 
   return updated.rowCount;
 };
@@ -111,7 +122,7 @@ const updateStatusPayment = async (id, status) => {
   const connect = await connection.connect();
   const updated = await connect.query(query, values);
   connect.release();
-
+  await reloadSocketData();
   return updated.rowCount;
 };
 
@@ -125,11 +136,12 @@ const remove = async (id, cod_order) => {
   if (removed.rowCount) {
     await orders.remove(cod_order);
   }
-
+  await reloadSocketData();
   return removed.rowCount;
 };
 
 module.exports = {
+  reloadSocketData,
   getAll,
   getAllWharehouse,
   create,

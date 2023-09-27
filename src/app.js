@@ -1,9 +1,16 @@
 require("dotenv").config() 
 
-const express = require("express") 
-const router = require("./router") 
-
-const app = express() 
+const express = require("express");
+const http = require("http");
+const router = require("./router");
+const app = express();
+const server = http.createServer(app);
+const io = require("socket.io")(server, {
+  cors: {
+    origin: process.env.ORIGIN,
+    methods: ["GET", "POST"],
+  },
+});
 
 app.use(express.json()) 
 app.use(function (_req, res, next) {
@@ -17,4 +24,4 @@ app.use(function (_req, res, next) {
 }) 
 app.use(router) 
 
-module.exports = app 
+module.exports = {server, io} 
