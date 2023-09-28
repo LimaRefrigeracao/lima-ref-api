@@ -24,7 +24,6 @@ const authMiddleware = require("./middlewares/authMiddleware")
 const servicesController = require("./controllers/servicesController");
 const servicesMiddleware = require("./middlewares/servicesMiddleware");
 router.get("/services", authMiddleware.authToken, servicesController.getAll);
-router.get("/services/finished", authMiddleware.authToken, servicesController.getFinished);
 router.get(
   "/services/warehouse",
   authMiddleware.authToken,
