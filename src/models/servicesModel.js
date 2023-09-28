@@ -27,10 +27,9 @@ const getAllWharehouse = async () => {
 };
 
 const create = async (service) => {
-  const { product, client, telephone, adress, status, observation } = service;
+  const { product, client, telephone, adress, status, observation, created_at } = service;
 
-  const created_at = utilities.generateDateLocale();
-
+  /* const created_at = utilities.generateDateLocale(); */
   const cod_order = await orders.create(created_at);
   if (cod_order) {
     const query =
