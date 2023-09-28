@@ -1,7 +1,9 @@
-FROM node:16
-WORKDIR /usr/src/app
-COPY package*.json ./
-RUN npm install
-COPY . .
-EXPOSE 3333
-CMD [ "node", "src/server.js" ]
+FROM node:16-alpine
+
+RUN apk add --no-cache bash
+
+RUN touch /home/node/.bashrc | echo "PS1='\w\$'" >> /home/node/.bashrc
+
+USER node
+
+WORKDIR /home/node/app

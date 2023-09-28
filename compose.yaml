@@ -1,4 +1,16 @@
 services:
+  app:
+    build: .
+    container_name: lima-ref-api
+    entrypoint: ./.docker/entrypoint.sh
+    environment:
+      - NODE_ENV=development
+    ports:
+      - 3333:3333
+    volumes:
+      - .:/home/node/app
+    tty: true
+
   db:
     image: postgres
     restart: always
