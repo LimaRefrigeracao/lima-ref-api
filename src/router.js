@@ -57,7 +57,7 @@ router.put(
   servicesController.updateStatusPayment
 );
 router.delete(
-  "/services/:id/:cod",
+  "/services/:id/:cod/:typeTable",
   authMiddleware.authToken,
   servicesController.remove
 );
