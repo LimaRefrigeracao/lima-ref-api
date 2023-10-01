@@ -41,8 +41,8 @@ const login = async (req, res) => {
         .json({ msg: "Nome de usuário ou Senha incorreta." });
     } else {
       try {
-        const token = await usersModel.signToken(req.body.remember, login);
-        return res.status(200).json({ token: token});
+        const response = await usersModel.signToken(req.body.remember, login);
+        return res.status(200).json({ token: response.token, user: response.userData});
       } catch (error) {
         return res.status(500).json({ msg: "Erro na assinatura do token" });
       }

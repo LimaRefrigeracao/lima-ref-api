@@ -66,13 +66,14 @@ const signToken = async (remember, user) => {
   const token = jwt.sign(
     {
       id: user.id,
+      username: user.username,
       admin: user.admin,
     },
     secret,
     { expiresIn: expiration }
   );
-
-  return token;
+  const decoded = jwt.decode(token);
+  return { token: token, userData: decoded };
 };
 
 module.exports = {
