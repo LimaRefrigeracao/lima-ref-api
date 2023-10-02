@@ -10,6 +10,7 @@ module.exports = {
           username: process.env.SEEDER_ADMIN_USERNAME,
           email: process.env.SEEDER_ADMIN_EMAIL,
           password: process.env.SEEDER_ADMIN_PASSWORD,
+          admin: process.env.SEEDER_ADMIN_PERMISSION,
         },
       ],
       {}
@@ -17,6 +18,6 @@ module.exports = {
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.bulkDelete("People", null, {});
+    await queryInterface.bulkDelete("users", null, {});
   },
 };
