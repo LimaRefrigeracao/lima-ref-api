@@ -3,13 +3,27 @@ const router = express.Router();
 
 const swaggerUi = require("swagger-ui-express");
 const swaggerDocument = require("../swagger.json");
+
+/* Controllers */
+const usersController = require("./controllers/usersController");
+const servicesController = require("./controllers/servicesController");
+const orderOfServiceController = require("./controllers/orderOfServiceController");
+
+/* Middlewares */
+const authMiddleware = require("./middlewares/authMiddleware");
+const usersMiddleware = require("./middlewares/usersMiddleware");
+const servicesMiddleware = require("./middlewares/servicesMiddleware");
+const orderOfServiceMiddleware = require("./middlewares/orderOfServiceMiddleware");
+
+/* Routes */
 router.use("/", swaggerUi.serve);
 router.get("/", swaggerUi.setup(swaggerDocument));
 
-const usersController = require("./controllers/usersController");
-const usersMiddleware = require("./middlewares/usersMiddleware");
+/* Users */
+router.get("/users", authMiddleware.authToken, usersController.getAll);
 router.post(
   "/users/register",
+  authMiddleware.authToken,
   usersMiddleware.validateRegister,
   usersController.register
 );
@@ -18,11 +32,13 @@ router.post(
   usersMiddleware.validateLogin,
   usersController.login
 );
+router.delete(
+  "/users/:id",
+  authMiddleware.authToken,
+  usersController.remove
+);
 
-const authMiddleware = require("./middlewares/authMiddleware")
-
-const servicesController = require("./controllers/servicesController");
-const servicesMiddleware = require("./middlewares/servicesMiddleware");
+/* Services */
 router.get("/services", authMiddleware.authToken, servicesController.getAll);
 router.get(
   "/services/warehouse",
@@ -62,8 +78,7 @@ router.delete(
   servicesController.remove
 );
 
-const orderOfServiceController = require("./controllers/orderOfServiceController");
-const orderOfServiceMiddleware = require("./middlewares/orderOfServiceMiddleware");
+/* Order of services */
 router.get(
   "/order_of_service/",
   authMiddleware.authToken,

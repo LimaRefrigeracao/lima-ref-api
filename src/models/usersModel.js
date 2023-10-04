@@ -2,6 +2,15 @@ const connection = require("./connection");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
+const getAll = async () => {
+  const connect = await connection.connect();
+  const users = await connect.query(
+    "SELECT id, username, email, admin FROM users"
+  );
+  connect.release();
+  return users.rows;
+};
+
 const checkUsersExists = async (email, username) => {
   const queryEmail = "SELECT * FROM users WHERE email = $1";
   const queryUsername = "SELECT * FROM users WHERE username = $1";
@@ -18,17 +27,17 @@ const checkUsersExists = async (email, username) => {
 };
 
 const register = async (request) => {
-  const { username, email, passwordHash } = request;
+  const { username, email, passwordHash, admin, signatureBase64 } = request;
   const query =
-    "INSERT INTO users (username, email, password) VALUES ($1, $2, $3)";
+    "INSERT INTO users (username, email, password, admin, signature) VALUES ($1, $2, $3, $4, $5)";
 
-  const values = [username, email, passwordHash];
+  const values = [username, email, passwordHash, admin, signatureBase64];
 
   const connect = await connection.connect();
-  const created = await connect.query(query, values);
+  const register = await connect.query(query, values);
   connect.release();
 
-  return created.rows;
+  return register.rows;
 };
 
 const login = async (request) => {
@@ -76,9 +85,31 @@ const signToken = async (remember, user) => {
   return { token: token, userData: decoded };
 };
 
+const verifyRemoveUser = async (id) => {
+  const connect = await connection.connect();
+  const users = await connect.query(
+    `SELECT id, username, admin FROM users WHERE id = ${id}`
+  );
+  connect.release();
+  return users.rows;
+};
+
+
+const remove = async (id) => {
+  const connect = await connection.connect();
+  const removed = await connect.query("DELETE FROM users WHERE id = $1", [
+    id,
+  ]);
+  connect.release();
+  return removed.rowCount;
+};
+
 module.exports = {
+  getAll,
   checkUsersExists,
   register,
   login,
   signToken,
+  verifyRemoveUser,
+  remove,
 };

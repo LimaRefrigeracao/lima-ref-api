@@ -1,6 +1,11 @@
 const usersModel = require("../models/usersModel");
 const bcrypt = require("bcrypt");
 
+const getAll = async (_req, res) => {
+  const users = await usersModel.getAll();
+  return res.status(200).json(users);
+};
+
 const register = async (req, res) => {
   const { username, email, password } = req.body;
 
@@ -20,7 +25,7 @@ const register = async (req, res) => {
     const salt = await bcrypt.genSalt(12);
     const passwordHash = await bcrypt.hash(password, salt);
 
-    const dataUser = { username, email, passwordHash };
+    const dataUser = { username, email, passwordHash, admin, signature };
 
     try {
       const register = await usersModel.register(dataUser);
@@ -51,8 +56,25 @@ const login = async (req, res) => {
     return res.status(404).json({ msg: "Erro ao tentar realizar login." });
   }
 };
+const remove = async (req, res) => {
+  const { id } = req.params;
+  const verifyUsers = await usersModel.verifyRemoveUser(id);
+
+
+  if (verifyUsers[0].username == 'admin' && verifyUsers[0].admin == true) {
+    return res.status(422).json({
+      msg: "Não é possível excluir o administrador raiz",
+    });
+  } else {
+    await usersModel.remove(id);
+    return res.status(204).json();
+  }
+  
+};
 
 module.exports = {
+  getAll,
   register,
   login,
+  remove,
 };
