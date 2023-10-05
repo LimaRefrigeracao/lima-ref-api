@@ -67,14 +67,16 @@ const remove = async (req, res) => {
   const verifyUsers = await usersModel.verifyRemoveUser(id);
 
 
-  if (verifyUsers[0].username == 'admin' && verifyUsers[0].admin == true) {
+  /* if (verifyUsers[0].username == 'admin' && verifyUsers[0].admin == true) {
     return res.status(422).json({
       msg: "Não é possível excluir o administrador raiz",
     });
   } else {
     await usersModel.remove(id);
     return res.status(204).json();
-  }
+  } */
+  await usersModel.remove(id);
+  return res.status(204).json();
   
 };
 
