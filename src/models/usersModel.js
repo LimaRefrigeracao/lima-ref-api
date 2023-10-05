@@ -5,10 +5,18 @@ const jwt = require("jsonwebtoken");
 const getAll = async () => {
   const connect = await connection.connect();
   const users = await connect.query(
-    "SELECT id, username, email, admin FROM users"
+    "SELECT id, username, email, admin, signature FROM users"
   );
   connect.release();
   return users.rows;
+};
+const getSignature = async (id) => {
+  const connect = await connection.connect();
+  const users = await connect.query(
+    `SELECT signature FROM users WHERE id = ${id}`
+  );
+  connect.release();
+  return users.rows[0].signature;
 };
 
 const checkUsersExists = async (email, username) => {
@@ -27,11 +35,12 @@ const checkUsersExists = async (email, username) => {
 };
 
 const register = async (request) => {
-  const { username, email, passwordHash, admin, signatureBase64 } = request;
+  const { username, email, passwordHash, admin, signature } = request;
+
   const query =
     "INSERT INTO users (username, email, password, admin, signature) VALUES ($1, $2, $3, $4, $5)";
 
-  const values = [username, email, passwordHash, admin, signatureBase64];
+  const values = [username, email, passwordHash, admin, signature];
 
   const connect = await connection.connect();
   const register = await connect.query(query, values);
@@ -76,7 +85,7 @@ const signToken = async (remember, user) => {
     {
       id: user.id,
       username: user.username,
-      admin: user.admin,
+      admin: user.admin
     },
     secret,
     { expiresIn: expiration }
@@ -105,6 +114,7 @@ const remove = async (id) => {
 };
 
 module.exports = {
+  getSignature,
   getAll,
   checkUsersExists,
   register,

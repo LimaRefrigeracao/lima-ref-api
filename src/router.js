@@ -21,8 +21,9 @@ router.get("/", swaggerUi.setup(swaggerDocument));
 
 /* Users */
 router.get("/users", authMiddleware.authToken, usersController.getAll);
+router.get("/users/signature/:id", authMiddleware.authToken, usersController.getSignature);
 router.post(
-  "/users/register",
+  "/users",
   authMiddleware.authToken,
   usersMiddleware.validateRegister,
   usersController.register

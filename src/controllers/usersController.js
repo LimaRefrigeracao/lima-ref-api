@@ -6,8 +6,14 @@ const getAll = async (_req, res) => {
   return res.status(200).json(users);
 };
 
+const getSignature = async (req, res) => {
+  const { id } = req.params;
+  const users = await usersModel.getSignature(id);
+  return res.status(200).json(users);
+};
+
 const register = async (req, res) => {
-  const { username, email, password } = req.body;
+  const { username, email, password, admin, signature } = req.body;
 
   const checkExists = await usersModel.checkUsersExists(email, username);
 
@@ -73,6 +79,7 @@ const remove = async (req, res) => {
 };
 
 module.exports = {
+  getSignature,
   getAll,
   register,
   login,
