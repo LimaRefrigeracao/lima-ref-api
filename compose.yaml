@@ -1,14 +1,17 @@
 services:
-#  app:
-#    build: .
-#    container_name: lima-ref-api
-#    entrypoint: ./.docker/entrypoint.sh
+#  limarefapi:
+#    image: limarefapi
+#    build:
+#      context: .
+#      dockerfile: ./Dockerfile
 #    environment:
-#      - NODE_ENV=development
+#      NODE_ENV: development
 #    ports:
 #      - 3333:3333
+#    depends_on:
+#      - db
 #    volumes:
-#      - .:/home/node/app
+#      - .:/usr/src/app
 #    tty: true
 
   db:

@@ -1,9 +1,10 @@
 FROM node:lts-alpine
-
-RUN apk add --no-cache bash
-
-RUN touch /home/node/.bashrc | echo "PS1='\w\$'" >> /home/node/.bashrc
-
+ENV NODE_ENV=development
+WORKDIR /usr/src/app
+COPY ["package.json", "package-lock.json*", "npm-shrinkwrap.json*", "./"]
+RUN npm install --development --silent && mv node_modules ../
+COPY . .
+EXPOSE 3000
+RUN chown -R node /usr/src/app
 USER node
-
-WORKDIR /home/node/app
+CMD ["npm", "run", "dev"]
