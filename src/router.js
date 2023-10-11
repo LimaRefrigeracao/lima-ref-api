@@ -10,6 +10,7 @@ const servicesController = require("./controllers/servicesController");
 const orderOfServiceController = require("./controllers/orderOfServiceController");
 const statusPaymentController = require("./controllers/statusPaymentController");
 const statusServiceController = require("./controllers/statusServiceController");
+const typesProductController = require("./controllers/typesProductController");
 
 /* Middlewares */
 const authMiddleware = require("./middlewares/authMiddleware");
@@ -18,6 +19,7 @@ const servicesMiddleware = require("./middlewares/servicesMiddleware");
 const orderOfServiceMiddleware = require("./middlewares/orderOfServiceMiddleware");
 const statusPaymentMiddleware = require("./middlewares/statusPaymentMiddleware");
 const statusServiceMiddleware = require("./middlewares/statusServiceMiddleware");
+const typesProductMiddleware = require("./middlewares/typesProductMiddleware");
 
 /* Routes */
 router.use("/", swaggerUi.serve);
@@ -83,7 +85,7 @@ router.delete(
   servicesController.remove
 );
 
-/* Order of services */
+/* Order of Services */
 router.get(
   "/order_of_service/",
   authMiddleware.authToken,
@@ -106,7 +108,7 @@ router.delete(
   orderOfServiceController.removeEstimate
 );
 
-/* Status payment */
+/* Status Payment */
 router.get(
   "/status_payment",
   authMiddleware.authToken,
@@ -124,7 +126,7 @@ router.delete(
   statusPaymentController.remove
 );
 
-/* Status service */
+/* Status Service */
 router.get(
   "/status_service",
   authMiddleware.authToken,
@@ -140,6 +142,24 @@ router.delete(
   "/status_service/:id",
   authMiddleware.authToken,
   statusServiceController.remove
+);
+
+/* Types Product */
+router.get(
+  "/types_product",
+  authMiddleware.authToken,
+  typesProductController.getAll
+);
+router.post(
+  "/types_product",
+  authMiddleware.authToken,
+  typesProductMiddleware.validateCreate,
+  typesProductController.create
+);
+router.delete(
+  "/types_product/:id",
+  authMiddleware.authToken,
+  typesProductController.remove
 );
 
 module.exports = router;
