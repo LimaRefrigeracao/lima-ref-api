@@ -153,6 +153,15 @@ const remove = async (id, cod_order, typeTable) => {
   return removed.rowCount;
 };
 
+const getCountProductByService = async (data) => {
+  const connect = await connection.connect();
+  const services = await connect.query(
+    "SELECT status.name, COUNT(service.status_id) AS count FROM status LEFT JOIN service ON status.id = service.status_id GROUP BY status.name"
+  );
+  connect.release();
+  return services.rows;
+};
+
 module.exports = {
   reloadSocketData,
   getAll,
@@ -163,4 +172,5 @@ module.exports = {
   updateStatusService,
   updateStatusPayment,
   remove,
+  getCountProductByService,
 };

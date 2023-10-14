@@ -11,6 +11,7 @@ const orderOfServiceController = require("./controllers/orderOfServiceController
 const statusPaymentController = require("./controllers/statusPaymentController");
 const statusServiceController = require("./controllers/statusServiceController");
 const typesProductController = require("./controllers/typesProductController");
+const panelControlController = require("./controllers/panelControlController");
 
 /* Middlewares */
 const authMiddleware = require("./middlewares/authMiddleware");
@@ -160,6 +161,14 @@ router.delete(
   "/types_product/:id",
   authMiddleware.authToken,
   typesProductController.remove
+);
+
+
+/* Panel Control */
+router.get(
+  "/panel_control/product_by_service",
+  authMiddleware.authToken,
+  panelControlController.getCountProductByService
 );
 
 module.exports = router;
