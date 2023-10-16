@@ -156,11 +156,14 @@ const getInfoGeneralService = async (_req, res) => {
     }
   });
   status_payment_by_service.service.forEach((service) => {
-    const statusCod = service.status;
+    const statusCod = service.status_payment;
     const statusInfo = statusPaymentMap[statusCod];
 
     if (statusInfo) {
-      if (statusInfo.description !== "Pago" || statusInfo.status !== 3) {
+      if (
+        statusInfo.description !== "Pago" ||
+        statusInfo.status_payment !== 3
+      ) {
         inProcessing += 1;
       }
     }
@@ -208,17 +211,18 @@ const getInfoPerformaceYearly = async (_req, res) => {
       }
     }
 
-    const statusCodPayment = service.status;
+    const statusCodPayment = service.status_payment;
     const statusInfoPayment = statusPaymentMap[statusCodPayment];
     if (statusInfoPayment) {
       if (
         statusInfoPayment.description === "Pago" ||
-        statusInfoPayment.status == 3
+        statusInfoPayment.status_payment == 3
       ) {
         paidServicesByMonth[month]++;
       }
     }
   });
+
 
   return res.status(200).json({
     requested: totalServicesByMonth,
