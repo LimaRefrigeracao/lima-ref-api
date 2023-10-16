@@ -146,7 +146,7 @@ const getInfoGeneralService = async (_req, res) => {
   });
 
   status_by_service.service.forEach((service) => {
-    const statusCod = service.status;
+    const statusCod = service.status_service;
     const statusInfo = statusServiceMap[statusCod];
 
     if (statusInfo) {
@@ -162,7 +162,7 @@ const getInfoGeneralService = async (_req, res) => {
     if (statusInfo) {
       if (
         statusInfo.description !== "Pago" ||
-        statusInfo.status_payment !== 3
+        statusInfo.status !== 3
       ) {
         inProcessing += 1;
       }
@@ -216,13 +216,12 @@ const getInfoPerformaceYearly = async (_req, res) => {
     if (statusInfoPayment) {
       if (
         statusInfoPayment.description === "Pago" ||
-        statusInfoPayment.status_payment == 3
+        statusInfoPayment.status == 3
       ) {
         paidServicesByMonth[month]++;
       }
     }
   });
-
 
   return res.status(200).json({
     requested: totalServicesByMonth,
