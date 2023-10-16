@@ -171,4 +171,10 @@ router.get(
   panelControlController.getCountProductByService
 );
 
+router.get(
+  "/panel_control/status_by_service",
+  authMiddleware.authToken,
+  panelControlController.getCountStatusByService
+);
+
 module.exports = router;

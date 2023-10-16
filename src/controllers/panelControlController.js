@@ -5,22 +5,12 @@ const getCountProductByService = async (_req, res) => {
 
   const counts = {};
   let length = 0;
-
-  const colors = [
-    "orange-500",
-    "cyan-500",
-    "pink-500",
-    "green-500",
-    "purple-500",
-    "teal-500",
-  ];
+  let totalQuant = 0;
 
   const typesProductMap = {};
   product_by_service.types_product.forEach((type) => {
     typesProductMap[type.id] = type.name;
   });
-
-  const colorIndexMap = {};
 
   product_by_service.service.forEach((service) => {
     const productName = service.product;
@@ -32,23 +22,73 @@ const getCountProductByService = async (_req, res) => {
       const typeName = typesProductMap[typeId];
 
       if (!counts[typeName]) {
-        const colorIndex = Object.keys(counts).length % colors.length;
         counts[typeName] = {
           name: typeName,
           count: 0,
-          color: colors[colorIndex],
         };
       }
 
       counts[typeName].count++;
       length++;
+      totalQuant += 1;
     }
   });
 
-  return res.status(200).json({length: length, values: counts });
+  
+  return res
+    .status(200)
+    .json({ length: length, totalQuant: totalQuant, values: counts });
 };
+
+
+const getCountStatusByService = async (_req, res) => {
+  const status_by_service = await panelControlModel.getCountStatusByService();
+
+  const counts = {};
+  let length = 0;
+  let totalQuant = 0;
+
+  const statusServiceMap = {};
+  status_by_service.status_service.forEach((status) => {
+    statusServiceMap[status.cod] = {
+      description: status.description,
+      color: JSON.parse(status.color).hex,
+    };
+  });
+
+  status_by_service.service.forEach((service) => {
+    const statusCod = service.status;
+    const statusInfo = statusServiceMap[statusCod];
+
+    if (statusInfo) {
+      if (!counts[statusCod]) {
+        counts[statusCod] = {
+          cod: statusCod,
+          description: statusInfo.description,
+          color: statusInfo.color,
+          count: 0,
+        };
+      }
+
+      counts[statusCod].count++;
+      length++;
+      totalQuant += 1;
+    }
+  });
+
+  // Converta o objeto de contagem em um array
+  const countsArray = Object.values(counts);
+
+  console.log(countsArray);
+
+  return res
+    .status(200)
+    .json({ length: length, totalQuant: totalQuant, values: countsArray });
+};
+
 
 
 module.exports = {
   getCountProductByService,
+  getCountStatusByService,
 };
