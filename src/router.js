@@ -189,4 +189,10 @@ router.get(
   panelControlController.getInfoGeneralService
 );
 
+router.get(
+  "/panel_control/info_performace_yearly",
+  authMiddleware.authToken,
+  panelControlController.getInfoPerformaceYearly
+);
+
 module.exports = router;

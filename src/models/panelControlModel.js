@@ -49,8 +49,33 @@ const getCountStatusPaymentByService = async () => {
   };
 };
 
+const getInfoPerformaceYearly = async () => {
+  const currentYear = new Date().getFullYear();
+
+  let arrayService = await service.getAll();
+  const arrayStatusPayment = await statusPayment.getAll();
+  const arrayStatusService = await statusService.getAll();
+
+  arrayService = arrayService.map((item) => ({
+    id: item.id,
+    status: item.status,
+    status_payment: item.payment_status,
+    month: new Date(item.created_at).getMonth(),
+    year: new Date(item.created_at).getFullYear(),
+  }));
+
+  arrayService = arrayService.filter((item) => item.year === currentYear);
+
+  return {
+    service: arrayService,
+    status_payment: arrayStatusPayment,
+    status_service: arrayStatusService,
+  };
+};
+
 module.exports = {
   getCountProductByService,
   getCountStatusByService,
   getCountStatusPaymentByService,
+  getInfoPerformaceYearly,
 };

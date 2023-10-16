@@ -137,13 +137,11 @@ const getInfoGeneralService = async (_req, res) => {
   status_by_service.status_service.forEach((status) => {
     statusServiceMap[status.cod] = {
       description: status.description,
-      color: JSON.parse(status.color).hex,
     };
   });
   status_payment_by_service.status_payment.forEach((status) => {
     statusPaymentMap[status.cod] = {
       description: status.description,
-      color: JSON.parse(status.color).hex,
     };
   });
 
@@ -168,7 +166,65 @@ const getInfoGeneralService = async (_req, res) => {
     }
   });
 
-  return res.status(200).json({service_in_progress: inProgress, payment_in_processing: inProcessing});
+  return res.status(200).json({
+    service_in_progress: inProgress,
+    payment_in_processing: inProcessing,
+  });
+};
+
+const getInfoPerformaceYearly = async (_req, res) => {
+  const info_performace = await panelControlModel.getInfoPerformaceYearly();
+
+  const totalServicesByMonth = new Array(12).fill(0);
+  const completedServicesByMonth = new Array(12).fill(0);
+  const paidServicesByMonth = new Array(12).fill(0);
+
+  info_performace.service.forEach((service) => {
+    const month = service.month;
+    totalServicesByMonth[month]++;
+
+    const statusServiceMap = {};
+    const statusPaymentMap = {};
+
+    info_performace.status_service.forEach((status) => {
+      statusServiceMap[status.cod] = {
+        description: status.description,
+      };
+    });
+    info_performace.status_payment.forEach((status) => {
+      statusPaymentMap[status.cod] = {
+        description: status.description,
+      };
+    });
+
+    const statusCodService = service.status;
+    const statusInfoService = statusServiceMap[statusCodService];
+    if (statusInfoService) {
+      if (
+        statusInfoService.description === "Concluído" ||
+        statusInfoService.status == 13
+      ) {
+        completedServicesByMonth[month]++;
+      }
+    }
+
+    const statusCodPayment = service.status;
+    const statusInfoPayment = statusPaymentMap[statusCodPayment];
+    if (statusInfoPayment) {
+      if (
+        statusInfoPayment.description === "Pago" ||
+        statusInfoPayment.status == 3
+      ) {
+        paidServicesByMonth[month]++;
+      }
+    }
+  });
+
+  return res.status(200).json({
+    requested: totalServicesByMonth,
+    concluded: completedServicesByMonth,
+    paid: paidServicesByMonth,
+  });
 };
 
 module.exports = {
@@ -176,4 +232,5 @@ module.exports = {
   getCountStatusByService,
   getCountStatusPaymentByService,
   getInfoGeneralService,
+  getInfoPerformaceYearly,
 };
