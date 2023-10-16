@@ -5,7 +5,7 @@ const statusPayment = require("./statusPaymentModel");
 const service = require("./servicesModel");
 
 const getCountProductByService = async () => {
-  let arrayService = await service.getAll();
+  let arrayService = await service.getAllNotConcluded();
   const arrayTypesProduct = await typesProduct.getAll();
 
   arrayService = arrayService.map((item) => ({

@@ -159,8 +159,6 @@ const getInfoGeneralService = async (_req, res) => {
     const statusCod = service.status;
     const statusInfo = statusPaymentMap[statusCod];
 
-    console.log(statusInfo)
-
     if (statusInfo) {
       if (
         statusInfo.description !== "Pago"

@@ -3,7 +3,6 @@ const utilities = require("../utils/utils.js");
 
 const reloadSocketData = async (cod_order) => {
   const data = await getUnique(cod_order);
-  console.log(data);
   const { io } = require("../app");
   io.emit("reloadDataOrders", data);
   return true;

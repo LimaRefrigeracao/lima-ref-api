@@ -3,7 +3,6 @@ const utilities = require("../utils/utils.js");
 const orders = require("./orderOfServiceModel");
 
 const reloadSocketData = async (typeTable) => {
-  console.log(typeTable);
   let data = null;
   if (typeTable == 1) {
     data = await getAll();
@@ -13,6 +12,15 @@ const reloadSocketData = async (typeTable) => {
   const { io } = require("../app");
   io.emit("reloadDataService", data);
   return true;
+};
+
+const getAllNotConcluded = async () => {
+  const connect = await connection.connect();
+  const services = await connect.query(
+    "SELECT * FROM services WHERE warehouse_status = false AND status <> 13 ORDER BY id DESC"
+  );
+  connect.release();
+  return services.rows;
 };
 
 const getAll = async () => {
@@ -164,6 +172,7 @@ const getCountProductByService = async (data) => {
 
 module.exports = {
   reloadSocketData,
+  getAllNotConcluded,
   getAll,
   getAllWharehouse,
   create,
