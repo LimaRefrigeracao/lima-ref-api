@@ -1,6 +1,7 @@
 const connection = require("./connection");
 const typesProduct = require("./typesProductModel");
 const statusService = require("./statusServiceModel");
+const statusPayment = require("./statusPaymentModel");
 const service = require("./servicesModel");
 
 const getCountProductByService = async () => {
@@ -33,7 +34,23 @@ const getCountStatusByService = async () => {
   };
 };
 
+const getCountStatusPaymentByService = async () => {
+  let arrayService = await service.getAll();
+  const arrayStatusPayment = await statusPayment.getAll();
+
+  arrayService = arrayService.map((item) => ({
+    id: item.id,
+    status: item.status,
+  }));
+
+  return {
+    service: arrayService,
+    status_payment: arrayStatusPayment,
+  };
+};
+
 module.exports = {
   getCountProductByService,
   getCountStatusByService,
+  getCountStatusPaymentByService,
 };

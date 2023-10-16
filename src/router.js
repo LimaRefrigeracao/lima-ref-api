@@ -177,4 +177,16 @@ router.get(
   panelControlController.getCountStatusByService
 );
 
+router.get(
+  "/panel_control/status_payment_by_service",
+  authMiddleware.authToken,
+  panelControlController.getCountStatusPaymentByService
+);
+
+router.get(
+  "/panel_control/info_general_service",
+  authMiddleware.authToken,
+  panelControlController.getInfoGeneralService
+);
+
 module.exports = router;
