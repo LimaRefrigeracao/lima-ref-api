@@ -11,7 +11,7 @@ const getNotifications = async () => {
   const filteredResult = services.filter((service) => {
     const createdAt = moment(service.created_at);
     const daysDifference = currentDate.diff(createdAt, "days");
-    return daysDifference > 7;
+    return daysDifference >= 7;
   });
 
   const resultWithDays = filteredResult.map((service) => {
@@ -23,8 +23,11 @@ const getNotifications = async () => {
     };
   });
 
-  return resultWithDays;
+  const sortedResult = resultWithDays.sort((a, b) => b.days - a.days);
+
+  return sortedResult;
 };
+
 
 module.exports = {
   getNotifications,
