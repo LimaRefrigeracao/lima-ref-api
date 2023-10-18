@@ -12,6 +12,7 @@ const statusPaymentController = require("./controllers/statusPaymentController")
 const statusServiceController = require("./controllers/statusServiceController");
 const typesProductController = require("./controllers/typesProductController");
 const panelControlController = require("./controllers/panelControlController");
+const toolsController = require("./controllers/toolsController");
 
 /* Middlewares */
 const authMiddleware = require("./middlewares/authMiddleware");
@@ -163,7 +164,6 @@ router.delete(
   typesProductController.remove
 );
 
-
 /* Panel Control */
 router.get(
   "/panel_control/product_by_service",
@@ -194,5 +194,14 @@ router.get(
   authMiddleware.authToken,
   panelControlController.getInfoPerformaceYearly
 );
+
+
+/* Outers */
+router.get(
+  "/tools/notifications",
+  authMiddleware.authToken,
+  toolsController.getNotifications
+);
+
 
 module.exports = router;
