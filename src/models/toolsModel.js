@@ -1,11 +1,10 @@
 const connection = require("./connection");
 const moment = require("moment");
+const serviceModel = require("./servicesModel");
 
 const getNotifications = async () => {
   const connect = await connection.connect();
-  const services = await connect.query(
-    "SELECT * FROM services WHERE warehouse_status = false AND status <> 13 ORDER BY created_at DESC"
-  );
+  const services = await serviceModel.getAllNotConcluded();
   connect.release();
   const result = services.rows;
 
