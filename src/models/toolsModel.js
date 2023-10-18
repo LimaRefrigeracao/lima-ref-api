@@ -6,10 +6,9 @@ const getNotifications = async () => {
   const connect = await connection.connect();
   const services = await serviceModel.getAllNotConcluded();
   connect.release();
-  const result = services.rows;
 
   const currentDate = moment();
-  const filteredResult = result.filter((service) => {
+  const filteredResult = services.filter((service) => {
     const createdAt = moment(service.created_at);
     const daysDifference = currentDate.diff(createdAt, "days");
     return daysDifference > 5;
