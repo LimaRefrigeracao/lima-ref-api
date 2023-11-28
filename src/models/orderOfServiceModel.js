@@ -52,6 +52,18 @@ const removeEstimate = async (cod, idEstimate) => {
   return removed.rowCount;
 };
 
+const removeEstimateSimple = async (cod, idEstimate) => {
+  const query =
+    "UPDATE order_of_service SET estimate = $1,value = $2 WHERE cod_order = $3";
+
+  const values = [null, null, cod];
+  const connect = await connection.connect();
+  const removed = await connect.query(query, values);
+  connect.release();
+  await reloadSocketData(cod);
+  return removed.rowCount;
+};
+
 const updateEstimate = async (estimateArray, value, cod) => {
   const estimate = estimateArray;
 
@@ -81,6 +93,7 @@ module.exports = {
   getUnique,
   create,
   removeEstimate,
+  removeEstimateSimple,
   updateEstimate,
   remove,
 };
