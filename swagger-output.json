@@ -1269,36 +1269,6 @@
         ]
       }
     },
-    "/panel_control/info_general_service": {
-      "get": {
-        "tags": [
-          "Paineis de Controle"
-        ],
-        "description": "",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "401": {
-            "description": "Não autorizado"
-          }
-        },
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ]
-      }
-    },
     "/panel_control/info_performace_yearly": {
       "get": {
         "tags": [

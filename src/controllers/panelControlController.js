@@ -124,56 +124,6 @@ const getCountStatusPaymentByService = async (_req, res) => {
   return res.status(200).json({ length: length, values: countsArray });
 };
 
-const getInfoGeneralService = async (_req, res) => {
-  const status_by_service = await panelControlModel.getCountStatusByService();
-  const status_payment_by_service =
-    await panelControlModel.getCountStatusPaymentByService();
-
-  let inProgress = 0;
-  let inProcessing = 0;
-  const statusServiceMap = {};
-  const statusPaymentMap = {};
-
-  status_by_service.status_service.forEach((status) => {
-    statusServiceMap[status.cod] = {
-      description: status.description,
-    };
-  });
-  status_payment_by_service.status_payment.forEach((status) => {
-    statusPaymentMap[status.cod] = {
-      description: status.description,
-    };
-  });
-
-  status_by_service.service.forEach((service) => {
-    const statusCod = service.status;
-    const statusInfo = statusServiceMap[statusCod];
-
-    if (statusInfo) {
-      if (statusInfo.description !== "Concluído" ) {
-        inProgress += 1;
-      }
-    }
-  });
-  status_payment_by_service.service.forEach((service) => {
-    const statusCod = service.status;
-    const statusInfo = statusPaymentMap[statusCod];
-
-    if (statusInfo) {
-      if (
-        statusInfo.description !== "Pago"
-      ) {
-        inProcessing += 1;
-      }
-    }
-  });
-
-  return res.status(200).json({
-    service_in_progress: inProgress,
-    payment_in_processing: inProcessing,
-  });
-};
-
 const getInfoPerformaceYearly = async (_req, res) => {
   const info_performace = await panelControlModel.getInfoPerformaceYearly();
 
@@ -231,6 +181,5 @@ module.exports = {
   getCountProductByService,
   getCountStatusByService,
   getCountStatusPaymentByService,
-  getInfoGeneralService,
   getInfoPerformaceYearly,
 };

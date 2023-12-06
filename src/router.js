@@ -374,18 +374,6 @@ router.get(
 );
 
 router.get(
-  "/panel_control/info_general_service",
-  authMiddleware.authToken,
-  panelControlController.getInfoGeneralService
-  /*
-    #swagger.tags = ['Paineis de Controle']
-    #swagger.security = [{
-      "bearerAuth": []
-    }] 
-  */
-);
-
-router.get(
   "/panel_control/info_performace_yearly",
   authMiddleware.authToken,
   panelControlController.getInfoPerformaceYearly
