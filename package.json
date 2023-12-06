@@ -7,11 +7,13 @@
     "node": "16.17.0"
   },
   "scripts": {
+    "database": "docker compose up -d --build",
+    "migrate": "npx sequelize-cli db:migrate",
+    "seed": "npx sequelize-cli db:seed:all",
     "dev": "nodemon src/server.js",
     "build": "npx babel src --out-dir dist",
     "start": "node dist/server.js",
-    "migrate:create": "npx sequelize-cli db:migrate",
-    "seed:create": "npx sequelize-cli db:seed:all"
+    "swagger": "node swagger.js"
   },
   "author": "",
   "license": "ISC",
@@ -20,6 +22,7 @@
     "@babel/core": "^7.22.17",
     "@babel/preset-env": "^7.22.15",
     "bcrypt": "^5.1.1",
+    "body-parser": "^1.20.2",
     "core-js": "^3.32.2",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
@@ -36,6 +39,7 @@
   "devDependencies": {
     "eslint": "^8.49.0",
     "nodemon": "^3.0.1",
-    "sequelize-cli": "^6.6.1"
+    "sequelize-cli": "^6.6.1",
+    "swagger-autogen": "^2.23.7"
   }
 }
