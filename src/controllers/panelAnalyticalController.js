@@ -42,7 +42,7 @@ const getValueCards = async () => {
 
   const dataAtual = new Date();
 
-  filteredOrderOfService.forEach(order => {
+  filteredOrderOfService.forEach(async order => {
     const dateParts = order.updated_at.split('-');
     const datePayment = new Date(
       parseInt(dateParts[0]),
@@ -50,7 +50,7 @@ const getValueCards = async () => {
       parseInt(dateParts[2].split('T')[0])
     );
 
-    const getWeekBounds = (date) => {
+    /* const getWeekBounds = async (date) => {
       const firstDayOfWeek = new Date(date);
       firstDayOfWeek.setDate(date.getDate() - date.getDay() + (date.getDay() === 0 ? -6 : 1));
 
@@ -60,7 +60,7 @@ const getValueCards = async () => {
       return { primeiroDia: firstDayOfWeek, ultimoDia: lastDayOfWeek };
     };
 
-    const boundsSemanaAtual = getWeekBounds(datePayment);
+    const boundsSemanaAtual = await getWeekBounds(datePayment); */
 
     if (
       datePayment.getDate() === dataAtual.getDate() &&
@@ -70,12 +70,12 @@ const getValueCards = async () => {
       somaMesmoDia += parseFloat(order.value);
     }
 
-    if (
+/*     if (
       datePayment >= boundsSemanaAtual.primeiroDia &&
       datePayment <= boundsSemanaAtual.ultimoDia
     ) {
       somaMesmaSemana += parseFloat(order.value);
-    }
+    } */
 
     if (
       (datePayment.getMonth() + 1) === (dataAtual.getMonth() + 1) &&
@@ -104,7 +104,7 @@ const getSumValuesOrdersPaid = async (_req, res) => {
 
   const values = await getValueCards();
 
-  if (values.valueDay && values.valueWeek && values.valueMonth && values.valueYear) {
+  if (values) {
     return res
       .status(200)
       .json({
@@ -128,7 +128,7 @@ const getSumValuesOrdersPaid = async (_req, res) => {
   }
   else {
     return res
-      .status(200)
+      .status(403)
       .json({
         daily: {
           value: 0,
