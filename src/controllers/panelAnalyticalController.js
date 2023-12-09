@@ -33,8 +33,8 @@ const getLabelCards = () => {
   };
 }
 
-const getValueCards = async () => {
-  const filteredOrderOfService = await panelAnalyticalModel.getOrdersPaid();
+const getValueCards = () => {
+  const filteredOrderOfService = panelAnalyticalModel.getOrdersPaid();
   let somaMesmoDia = 0;
   let somaMesmoMes = 0;
   let somaMesmoAno = 0;
@@ -42,7 +42,7 @@ const getValueCards = async () => {
 
   const dataAtual = new Date();
 
-  filteredOrderOfService.forEach(async order => {
+  filteredOrderOfService.forEach(order => {
     const dateParts = order.updated_at.split('-');
     const datePayment = new Date(
       parseInt(dateParts[0]),
@@ -50,7 +50,7 @@ const getValueCards = async () => {
       parseInt(dateParts[2].split('T')[0])
     );
 
-    /* const getWeekBounds = async (date) => {
+    const getWeekBounds = (date) => {
       const firstDayOfWeek = new Date(date);
       firstDayOfWeek.setDate(date.getDate() - date.getDay() + (date.getDay() === 0 ? -6 : 1));
 
@@ -60,7 +60,7 @@ const getValueCards = async () => {
       return { primeiroDia: firstDayOfWeek, ultimoDia: lastDayOfWeek };
     };
 
-    const boundsSemanaAtual = await getWeekBounds(datePayment); */
+    const boundsSemanaAtual = getWeekBounds(datePayment);
 
     if (
       datePayment.getDate() === dataAtual.getDate() &&
@@ -70,12 +70,12 @@ const getValueCards = async () => {
       somaMesmoDia += parseFloat(order.value);
     }
 
-/*     if (
+    if (
       datePayment >= boundsSemanaAtual.primeiroDia &&
       datePayment <= boundsSemanaAtual.ultimoDia
     ) {
       somaMesmaSemana += parseFloat(order.value);
-    } */
+    }
 
     if (
       (datePayment.getMonth() + 1) === (dataAtual.getMonth() + 1) &&
@@ -102,53 +102,28 @@ const getSumValuesOrdersPaid = async (_req, res) => {
 
   const { labelDay, labelWeek, labelMonth, labelYear } = getLabelCards();
 
-  const values = await getValueCards();
+  const { valueDay, valueWeek, valueMonth, valueYear } = getValueCards();
 
-  if (values) {
-    return res
-      .status(200)
-      .json({
-        daily: {
-          value: values.valueDay,
-          day: labelDay
-        },
-        weekly: {
-          value: values.valueWeek,
-          week: labelWeek
-        },
-        monthly: {
-          value: values.valueMonth,
-          month: labelMonth
-        },
-        yearly: {
-          value: values.valueYear,
-          year: labelYear
-        }
-      });
-  }
-  else {
-    return res
-      .status(403)
-      .json({
-        daily: {
-          value: 0,
-          day: labelDay
-        },
-        weekly: {
-          value: 0,
-          week: labelWeek
-        },
-        monthly: {
-          value: 0,
-          month: labelMonth
-        },
-        yearly: {
-          value: 0,
-          year: labelYear
-        }
-      });
-  }
-
+  return res
+    .status(200)
+    .json({
+      daily: {
+        value: valueDay,
+        day: labelDay
+      },
+      weekly: {
+        value: valueWeek,
+        week: labelWeek
+      },
+      monthly: {
+        value: valueMonth,
+        month: labelMonth
+      },
+      yearly: {
+        value: valueYear,
+        year: labelYear
+      }
+    });
 
 };
 
