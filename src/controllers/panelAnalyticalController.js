@@ -104,26 +104,52 @@ const getSumValuesOrdersPaid = async (_req, res) => {
 
   const values = await getValueCards();
 
-  return res
-    .status(200)
-    .json({
-      daily: {
-        value: values.valueDay,
-        day: labelDay
-      },
-      weekly: {
-        value: values.valueWeek,
-        week: labelWeek
-      },
-      monthly: {
-        value: values.valueMonth,
-        month: labelMonth
-      },
-      yearly: {
-        value: values.valueYear,
-        year: labelYear
-      }
-    });
+  if (values.valueDay && values.valueWeek && values.valueMonth && values.valueYear) {
+    return res
+      .status(200)
+      .json({
+        daily: {
+          value: values.valueDay,
+          day: labelDay
+        },
+        weekly: {
+          value: values.valueWeek,
+          week: labelWeek
+        },
+        monthly: {
+          value: values.valueMonth,
+          month: labelMonth
+        },
+        yearly: {
+          value: values.valueYear,
+          year: labelYear
+        }
+      });
+  }
+  else {
+    return res
+      .status(200)
+      .json({
+        daily: {
+          value: 0,
+          day: labelDay
+        },
+        weekly: {
+          value: 0,
+          week: labelWeek
+        },
+        monthly: {
+          value: 0,
+          month: labelMonth
+        },
+        yearly: {
+          value: 0,
+          year: labelYear
+        }
+      });
+  }
+
+
 };
 
 module.exports = {
