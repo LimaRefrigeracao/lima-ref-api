@@ -33,6 +33,16 @@ const getLabelCards = () => {
   };
 }
 
+const getWeekBounds = (date) => {
+  const firstDayOfWeek = new Date(date);
+  firstDayOfWeek.setDate(date.getDate() - date.getDay() + (date.getDay() === 0 ? -6 : 1));
+
+  const lastDayOfWeek = new Date(date);
+  lastDayOfWeek.setDate(firstDayOfWeek.getDate() + 6);
+
+  return { primeiroDia: firstDayOfWeek, ultimoDia: lastDayOfWeek };
+};
+
 const getSumValuesOrdersPaid = async (_req, res) => {
 
   const { labelDay, labelWeek, labelMonth, labelYear } = getLabelCards();
@@ -52,17 +62,6 @@ const getSumValuesOrdersPaid = async (_req, res) => {
       parseInt(dateParts[1]) - 1,
       parseInt(dateParts[2].split('T')[0])
     );
-
-    const getWeekBounds = (date) => {
-      const firstDayOfWeek = new Date(date);
-      firstDayOfWeek.setDate(date.getDate() - date.getDay() + (date.getDay() === 0 ? -6 : 1));
-
-      const lastDayOfWeek = new Date(date);
-      lastDayOfWeek.setDate(firstDayOfWeek.getDate() + 6);
-
-      return { primeiroDia: firstDayOfWeek, ultimoDia: lastDayOfWeek };
-    };
-
     const boundsSemanaAtual = getWeekBounds(datePayment);
 
     if (
