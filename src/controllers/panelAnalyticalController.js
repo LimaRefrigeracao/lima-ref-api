@@ -33,8 +33,11 @@ const getLabelCards = () => {
   };
 }
 
-const getValueCards = () => {
-  const filteredOrderOfService = panelAnalyticalModel.getOrdersPaid();
+const getSumValuesOrdersPaid = async (_req, res) => {
+
+  const { labelDay, labelWeek, labelMonth, labelYear } = getLabelCards();
+
+  const filteredOrderOfService = await panelAnalyticalModel.getOrdersPaid();
   let somaMesmoDia = 0;
   let somaMesmoMes = 0;
   let somaMesmoAno = 0;
@@ -89,38 +92,23 @@ const getValueCards = () => {
     }
   });
 
-  return {
-    valueDay: somaMesmoDia,
-    valueWeek: somaMesmaSemana,
-    valueMonth: somaMesmoMes,
-    valueYear: somaMesmoAno
-  }
-
-}
-
-const getSumValuesOrdersPaid = async (_req, res) => {
-
-  const { labelDay, labelWeek, labelMonth, labelYear } = getLabelCards();
-
-  const { valueDay, valueWeek, valueMonth, valueYear } = getValueCards();
-
   return res
     .status(200)
     .json({
       daily: {
-        value: valueDay,
+        value: somaMesmoDia,
         day: labelDay
       },
       weekly: {
-        value: valueWeek,
+        value: somaMesmaSemana,
         week: labelWeek
       },
       monthly: {
-        value: valueMonth,
+        value: somaMesmoMes,
         month: labelMonth
       },
       yearly: {
-        value: valueYear,
+        value: somaMesmoAno,
         year: labelYear
       }
     });
