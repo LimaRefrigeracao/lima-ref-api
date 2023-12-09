@@ -13,6 +13,7 @@ const statusPaymentController = require("./controllers/statusPaymentController")
 const statusServiceController = require("./controllers/statusServiceController");
 const typesProductController = require("./controllers/typesProductController");
 const panelControlController = require("./controllers/panelControlController");
+const panelAnalyticalController = require("./controllers/panelAnalyticalController");
 const toolsController = require("./controllers/toolsController");
 
 /* Middlewares */
@@ -379,6 +380,18 @@ router.get(
   panelControlController.getInfoPerformaceYearly
   /*
     #swagger.tags = ['Paineis de Controle']
+    #swagger.security = [{
+      "bearerAuth": []
+    }] 
+  */
+);
+
+router.get(
+  "/panel_analytical/info_values_os_paid",
+  //authMiddleware.authToken,
+  panelAnalyticalController.getSumValuesOrdersPaid
+  /*
+    #swagger.tags = ['Paineis de Analíticos']
     #swagger.security = [{
       "bearerAuth": []
     }] 

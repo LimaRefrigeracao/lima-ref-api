@@ -7,6 +7,13 @@ const getAll = async () => {
   return status_payment.rows;
 };
 
+const getUniqueStatus = async (description) => {
+  const connect = await connection.connect();
+  const status_payment = await connect.query("SELECT cod FROM status_payment WHERE description = $1", [description]);
+  connect.release();
+  return status_payment.rows;
+};
+
 const create = async (status_payment) => {
   const { description, cod, color } = status_payment;
   const query =
@@ -37,6 +44,7 @@ const remove = async (id) => {
 
 module.exports = {
   getAll,
+  getUniqueStatus,
   create,
   remove,
 };

@@ -17,6 +17,15 @@ const getUnique = async (cod) => {
   return order_of_service.rows;
 };
 
+const getAll = async () => {
+  const connect = await connection.connect();
+  const order_of_service = await connect.query(
+    `SELECT * FROM order_of_service`
+  );
+  connect.release();
+  return order_of_service.rows;
+};
+
 const create = async (created_at) => {
   const query =
     "INSERT INTO order_of_service(created_at) VALUES ($1) RETURNING cod_order";
@@ -90,6 +99,7 @@ const remove = async (cod_order) => {
 
 module.exports = {
   reloadSocketData,
+  getAll,
   getUnique,
   create,
   removeEstimate,

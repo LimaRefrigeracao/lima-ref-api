@@ -1,6 +1,7 @@
 const connection = require("./connection");
 const utilities = require("../utils/utils.js");
 const orders = require("./orderOfServiceModel");
+const status_payment = require("./statusPaymentModel");
 
 const reloadSocketData = async (typeTable) => {
   let data = null;
@@ -13,6 +14,25 @@ const reloadSocketData = async (typeTable) => {
   io.emit("reloadDataService", data);
   return true;
 };
+
+const getAllPaid = async () => {
+  try {
+    const status = await status_payment.getUniqueStatus('Pago');
+    const connect = await connection.connect();
+
+    const services = await connect.query(
+      "SELECT * FROM services WHERE payment_status = $1",
+      [status[0].cod]
+    );
+
+    connect.release();
+    return services.rows;
+  } catch (error) {
+    console.error("Error in getAllPaid:", error.message);
+    throw error;
+  }
+};
+
 
 const getAllNotConcluded = async () => {
   const connect = await connection.connect();
@@ -172,6 +192,7 @@ const getCountProductByService = async (data) => {
 
 module.exports = {
   reloadSocketData,
+  getAllPaid,
   getAllNotConcluded,
   getAll,
   getAllWharehouse,
