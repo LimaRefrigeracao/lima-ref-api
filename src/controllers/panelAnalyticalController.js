@@ -54,6 +54,7 @@ const getSumValuesOrdersPaid = async (_req, res) => {
   let somaMesmaSemana = 0;
 
   const dataAtual = new Date();
+  const boundsSemanaAtual = getWeekBounds(dataAtual);
 
   filteredOrderOfService.forEach(order => {
     const dateParts = order.updated_at.split('-');
@@ -62,35 +63,33 @@ const getSumValuesOrdersPaid = async (_req, res) => {
       parseInt(dateParts[1]) - 1,
       parseInt(dateParts[2].split('T')[0])
     );
-    const boundsSemanaAtual = getWeekBounds(datePayment);
 
     if (
       datePayment.getDate() === dataAtual.getDate() &&
       (datePayment.getMonth() + 1) === (dataAtual.getMonth() + 1) &&
       datePayment.getFullYear() === dataAtual.getFullYear()
     ) {
-      somaMesmoDia += parseFloat(order.value);
+      somaMesmoDia += order.value ? parseFloat(order.value) : 0;
     }
 
     if (
       datePayment >= boundsSemanaAtual.primeiroDia &&
       datePayment <= boundsSemanaAtual.ultimoDia
     ) {
-      somaMesmaSemana += parseFloat(order.value);
+      somaMesmaSemana += order.value ? parseFloat(order.value) : 0;
     }
 
     if (
       (datePayment.getMonth() + 1) === (dataAtual.getMonth() + 1) &&
       datePayment.getFullYear() === dataAtual.getFullYear()
     ) {
-      somaMesmoMes += parseFloat(order.value);
+      somaMesmoMes += order.value ? parseFloat(order.value) : 0;
     }
 
     if (datePayment.getFullYear() === dataAtual.getFullYear()) {
-      somaMesmoAno += parseFloat(order.value);
+      somaMesmoAno += order.value ? parseFloat(order.value) : 0;
     }
   });
-
   return res
     .status(200)
     .json({
