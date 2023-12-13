@@ -1,5 +1,12 @@
 const connection = require("./connection");
 
+const reloadSocketData = async () => {
+  const data = await getAll();
+  const { io } = require("../app");
+  io.emit("reloadDataExpenses", data);
+  return true;
+};
+
 const getAll = async () => {
   const connect = await connection.connect();
   const expenses = await connect.query("SELECT * FROM expenses");
@@ -22,6 +29,8 @@ const create = async (request) => {
   const connect = await connection.connect();
   const created = await connect.query(query, values);
   connect.release();
+
+  await reloadSocketData();
 
   return created.rowCount;
 };
