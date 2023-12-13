@@ -113,6 +113,82 @@ const getSumValuesOrdersPaid = async (_req, res) => {
 
 };
 
+const getValuesInvoicingLiquid = async (_req, res) => {
+  const { labelMonth, labelYear } = getLabelCards();
+
+  const dataAtual = new Date();
+
+  let valueEntryMonth = 0;
+  let valueEntryYear = 0;
+
+  const filteredOrderOfService = await panelAnalyticalModel.getOrdersPaid();
+
+  if (filteredOrderOfService) {
+    filteredOrderOfService.forEach(order => {
+      const dateParts = order.updated_at.split('-');
+      const datePayment = new Date(
+        parseInt(dateParts[0]),
+        parseInt(dateParts[1]) - 1,
+        parseInt(dateParts[2].split('T')[0])
+      );
+      if (
+        (datePayment.getMonth() + 1) === (dataAtual.getMonth() + 1) &&
+        datePayment.getFullYear() === dataAtual.getFullYear()
+      ) {
+        valueEntryMonth += order.value ? parseFloat(order.value) : 0;
+      }
+      if (datePayment.getFullYear() === dataAtual.getFullYear()) {
+        valueEntryYear += order.value ? parseFloat(order.value) : 0;
+      }
+    });
+  }
+
+
+  let valueExitMonth = 0;
+  let valueExitYear = 0;
+
+  const expensesAll = await panelAnalyticalModel.loadExpensesAll()
+
+  if (expensesAll) {
+    expensesAll.forEach(expense => {
+      const dateParts = expense.date.split('-');
+      const datePayment = new Date(
+        parseInt(dateParts[0]),
+        parseInt(dateParts[1]) - 1,
+        parseInt(dateParts[2].split('T')[0])
+      );
+      if (
+        (datePayment.getMonth() + 1) === (dataAtual.getMonth() + 1) &&
+        datePayment.getFullYear() === dataAtual.getFullYear()
+      ) {
+        valueExitMonth += expense.value ? parseFloat(expense.value) : 0;
+      }
+      if (datePayment.getFullYear() === dataAtual.getFullYear()) {
+        valueExitYear += expense.value ? parseFloat(expense.value) : 0;
+      }
+    });
+  }
+
+  return res
+    .status(200)
+    .json({
+      monthly: {
+        label: labelMonth,
+        entry: valueEntryMonth,
+        exit: valueExitMonth,
+        totality: (valueEntryMonth - valueExitMonth)
+      },
+      yearly: {
+        label: labelYear,
+        entry: valueEntryYear,
+        exit: valueExitYear,
+        totality: (valueEntryYear - valueExitYear)
+      }
+    });
+
+};
+
 module.exports = {
   getSumValuesOrdersPaid,
+  getValuesInvoicingLiquid
 };

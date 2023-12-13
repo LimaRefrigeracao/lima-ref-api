@@ -15,6 +15,7 @@ const typesProductController = require("./controllers/typesProductController");
 const panelControlController = require("./controllers/panelControlController");
 const panelAnalyticalController = require("./controllers/panelAnalyticalController");
 const toolsController = require("./controllers/toolsController");
+const expensesController = require("./controllers/expensesController")
 
 /* Middlewares */
 const authMiddleware = require("./middlewares/authMiddleware");
@@ -24,6 +25,7 @@ const orderOfServiceMiddleware = require("./middlewares/orderOfServiceMiddleware
 const statusPaymentMiddleware = require("./middlewares/statusPaymentMiddleware");
 const statusServiceMiddleware = require("./middlewares/statusServiceMiddleware");
 const typesProductMiddleware = require("./middlewares/typesProductMiddleware");
+const expensesMiddleware = require("./middlewares/expensesMiddleware")
 
 /* Routes */
 router.use(bodyParser.json());
@@ -33,6 +35,40 @@ router.get("/", swaggerUi.setup(swaggerFile)
     #swagger.ignore = true
   */
 );
+
+router.get(
+  "/expenses", authMiddleware.authToken,
+  expensesController.getAll
+  /*
+    #swagger.tags = ['Despesas']
+    #swagger.security = [{
+      "bearerAuth": []
+    }] 
+  */
+)
+
+router.post(
+  "/expenses", authMiddleware.authToken,
+  expensesMiddleware.validateCreate,
+  expensesController.create
+  /*
+    #swagger.tags = ['Despesas']
+    #swagger.security = [{
+      "bearerAuth": []
+    }] 
+  */
+)
+
+router.delete(
+  "/expenses/:id", authMiddleware.authToken,
+  expensesController.remove
+  /*
+    #swagger.tags = ['Despesas']
+    #swagger.security = [{
+      "bearerAuth": []
+    }] 
+  */
+)
 
 
 router.get(
@@ -77,7 +113,7 @@ router.post(
   */
 );
 router.delete(
-  "/users/:id", authMiddleware.authToken, 
+  "/users/:id", authMiddleware.authToken,
   usersController.remove
   /*
     #swagger.tags = ['Usuários']
@@ -90,7 +126,7 @@ router.delete(
 
 
 router.get(
-  "/services", authMiddleware.authToken, 
+  "/services", authMiddleware.authToken,
   servicesController.getAll
   /*
     #swagger.tags = ['Serviços']
@@ -388,8 +424,20 @@ router.get(
 
 router.get(
   "/panel_analytical/info_values_os_paid",
-  //authMiddleware.authToken,
+  authMiddleware.authToken,
   panelAnalyticalController.getSumValuesOrdersPaid
+  /*
+    #swagger.tags = ['Paineis de Analíticos']
+    #swagger.security = [{
+      "bearerAuth": []
+    }] 
+  */
+);
+
+router.get(
+  "/panel_analytical/info_invoicing_liquid",
+  authMiddleware.authToken,
+  panelAnalyticalController.getValuesInvoicingLiquid
   /*
     #swagger.tags = ['Paineis de Analíticos']
     #swagger.security = [{

@@ -1,5 +1,6 @@
 const services = require("./servicesModel")
 const order_of_service = require("./orderOfServiceModel")
+const expenses = require("./expensesModel")
 
 const getOrdersPaid = async () => {
   try {
@@ -29,6 +30,17 @@ const getOrdersPaid = async () => {
   }
 };
 
+const loadExpensesAll = async () => {
+  try {
+    const expensesAll = expenses.getAll();
+    return expensesAll
+  } catch (error) {
+    console.error("Error in getOrdersPaid:", error.message);
+    return null
+  }
+}
+
 module.exports = {
+  loadExpensesAll,
   getOrdersPaid,
 };

@@ -1329,6 +1329,36 @@
         ]
       }
     },
+    "/panel_analytical/info_invoicing_liquid": {
+      "get": {
+        "tags": [
+          "Paineis de Analíticos"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Não autorizado"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
     "/tools/notifications": {
       "get": {
         "tags": [
