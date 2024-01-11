@@ -16,6 +16,7 @@ const panelControlController = require("./controllers/panelControlController");
 const panelAnalyticalController = require("./controllers/panelAnalyticalController");
 const toolsController = require("./controllers/toolsController");
 const expensesController = require("./controllers/expensesController")
+const employeesController = require("./controllers/employeesController")
 
 /* Middlewares */
 const authMiddleware = require("./middlewares/authMiddleware");
@@ -26,6 +27,7 @@ const statusPaymentMiddleware = require("./middlewares/statusPaymentMiddleware")
 const statusServiceMiddleware = require("./middlewares/statusServiceMiddleware");
 const typesProductMiddleware = require("./middlewares/typesProductMiddleware");
 const expensesMiddleware = require("./middlewares/expensesMiddleware")
+const employeesMiddleware = require("./middlewares/employeesMiddleware")
 
 /* Routes */
 router.use(bodyParser.json());
@@ -35,6 +37,51 @@ router.get("/", swaggerUi.setup(swaggerFile)
     #swagger.ignore = true
   */
 );
+
+router.get(
+  "/employees", authMiddleware.authToken,
+  employeesController.getAll
+  /*
+    #swagger.tags = ['Funcionários']
+    #swagger.security = [{
+      "bearerAuth": []
+    }] 
+  */
+)
+
+router.post(
+  "/employees", authMiddleware.authToken,
+  employeesMiddleware.validateCreate,
+  employeesController.create
+  /*
+    #swagger.tags = ['Funcionários']
+    #swagger.security = [{
+      "bearerAuth": []
+    }] 
+  */
+)
+
+router.patch(
+  "/employees/:id", authMiddleware.authToken,
+  employeesController.update
+  /*
+    #swagger.tags = ['Funcionários']
+    #swagger.security = [{
+      "bearerAuth": []
+    }] 
+  */
+)
+
+router.delete(
+  "/employees/:id", authMiddleware.authToken,
+  employeesController.remove
+  /*
+    #swagger.tags = ['Funcionários']
+    #swagger.security = [{
+      "bearerAuth": []
+    }] 
+  */
+)
 
 router.get(
   "/expenses", authMiddleware.authToken,

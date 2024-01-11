@@ -7,7 +7,6 @@
     "node": "16.17.0"
   },
   "scripts": {
-    "database": "docker compose up -d --build",
     "migrate": "npx sequelize-cli db:migrate",
     "seed": "npx sequelize-cli db:seed:all",
     "dev": "nodemon src/server.js",
@@ -15,7 +14,7 @@
     "start": "node dist/server.js",
     "swagger": "node swagger.js"
   },
-  "author": "",
+  "author": "João Pedro Pereira Lima",
   "license": "ISC",
   "dependencies": {
     "@babel/cli": "^7.22.15",
