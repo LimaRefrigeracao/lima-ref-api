@@ -1,2 +1,2 @@
-# Para instruções e informações do projeto, acesse ou clone a [WIKI](https://github.com/LimaRefrigeracao/lima-ref-api.wiki.git) do projeto.
+# Para instruções e informações do projeto, acesse a [WIKI](https://github.com/LimaRefrigeracao/lima-ref-api/wiki) do projeto.
 
