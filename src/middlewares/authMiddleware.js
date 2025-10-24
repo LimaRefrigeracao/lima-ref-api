@@ -5,7 +5,7 @@ const authToken = (req, res, next) => {
   const token = authHeader && authHeader.split(" ")[1];
 
   if (!token) {
-    res.status(401).json({ msg: "Acesso Negado!" });
+    return res.status(401).json({ msg: "Acesso Negado!" });
   }
 
   try {
@@ -13,7 +13,7 @@ const authToken = (req, res, next) => {
     jwt.verify(token, secret);
     next();
   } catch (error) {
-    res.status(401).json({ msg: "Token Inválido!" });
+    return res.status(401).json({ msg: "Token Inválido!" });
   }
 };
 
