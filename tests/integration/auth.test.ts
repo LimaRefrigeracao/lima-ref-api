@@ -1,12 +1,16 @@
 import supertest from 'supertest';
 import { app } from '../../src/app';
 import connection from '../../src/database/connection';
-import * as bcrypt from 'bcrypt';
 
-jest.mock('bcrypt', () => ({
-  genSalt: jest.fn(() => Promise.resolve('salt')),
-  hash: jest.fn(() => Promise.resolve('hashed')),
-  compare: jest.fn(() => Promise.resolve(true))
+import * as argon2 from 'argon2';
+
+
+const fakeArgon2Hash = '$argon2id$v=19$m=65536,t=3,p=4$saltsalt$hashhashhashhashhashhashhashhash';
+jest.mock('argon2', () => ({
+  hash: jest.fn(() => Promise.resolve(fakeArgon2Hash)),
+  verify: jest.fn((hash, password) => Promise.resolve(
+    hash.startsWith('$argon2id$') && password === 'adminpassword'
+  ))
 }));
 
 beforeAll(() => {
@@ -70,24 +74,23 @@ describe('Testes de Integração - Autenticação (Auth)', () => {
   });
 
   test('POST /auth/login - sucesso retorna token e usuário no campo data', async () => {
-    const salt = await bcrypt.genSalt(12);
-    const passwordHash = await bcrypt.hash('adminpassword', salt);
+      const passwordHash = fakeArgon2Hash;
 
-    mockConnectWithResponses((sql) => {
-      if (sql.includes('users') && sql.includes('WHERE username')) {
-        return { rows: [{ id: 1, username: 'adminuser', password: passwordHash, admin: false, tenant_id: 1 }], rowCount: 1 };
-      }
-      return { rows: [], rowCount: 0 };
+      mockConnectWithResponses((sql) => {
+        if (sql.includes('users') && sql.includes('WHERE username')) {
+          return { rows: [{ id: 1, username: 'adminuser', password: passwordHash, admin: true, tenant_id: 1 }], rowCount: 1 };
+        }
+        return { rows: [], rowCount: 0 };
+      });
+
+      const res = await supertest(app)
+        .post('/auth/login')
+        .send({ username: 'adminuser', password: 'adminpassword', remember: true });
+
+      expect(res.status).toBe(200);
+      expect(res.body.success).toBe(true);
+      expect(res.body.token).toBeDefined();
+      expect(res.body.data.user).toBeDefined();
+      expect(res.body.msg).toBe("Login realizado com sucesso");
     });
-
-    const res = await supertest(app)
-      .post('/auth/login')
-      .send({ username: 'adminuser', password: 'adminpassword', remember: true });
-
-    expect(res.status).toBe(200);
-    expect(res.body.success).toBe(true);
-    expect(res.body.data.token).toBeDefined();
-    expect(res.body.data.user).toBeDefined();
-    expect(res.body.msg).toBe("Login realizado com sucesso");
-  });
 });
