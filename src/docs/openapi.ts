@@ -6,7 +6,6 @@ import { z } from "zod";
 
 import User from "../models/Users";
 import Auth from "../models/Auth.js";
-import Expense from "../models/Expenses";
 import Service from "../models/Services";
 import OrderOfService from "../models/OrderOfService";
 import StatusPayment from "../models/StatusPayment";
@@ -18,7 +17,6 @@ const registry = new OpenAPIRegistry();
 
 registry.register("Register", Auth.registerSchema);
 registry.register("Login", Auth.loginSchema);
-registry.register("Expense", Expense.schema);
 registry.register("Service", Service.schema);
 registry.register("OrderOfService", OrderOfService.schema);
 registry.register("StatusPayment", StatusPayment.schema);
@@ -128,41 +126,6 @@ registry.registerPath({
   security,
   request: { params: z.object({ id: z.string() }) },
   responses: { 204: { description: "Unidade deletada" } }
-});
-
-// ========================
-// EXPENSES
-// ========================
-
-registry.registerPath({
-  method: "get",
-  path: "/expenses",
-  tags: ["Despesas"],
-  security,
-  responses: { 200: { content: { "application/json": { schema: Expense.listResponseSchema } }, description: "Despesas listadas" } }
-});
-
-registry.registerPath({
-  method: "post",
-  path: "/expenses",
-  tags: ["Despesas"],
-  security,
-  request: {
-    body: {
-      content: { "application/json": { schema: Expense.schema } },
-      required: true,
-    }
-  },
-  responses: { 201: { content: { "application/json": { schema: Expense.responseSchema } }, description: "Despesa criada" } }
-});
-
-registry.registerPath({
-  method: "delete",
-  path: "/expenses/{id}",
-  tags: ["Despesas"],
-  security,
-  request: { params: z.object({ id: z.string() }) },
-  responses: { 204: { description: "Despesa deletada" } }
 });
 
 // ========================
@@ -398,26 +361,6 @@ registry.registerPath({
   security,
   request: { params: z.object({ id: z.string() }) },
   responses: { 204: { description: "Tipo de Produto deletado" } }
-});
-
-// ========================
-// PANEL ANALYTICAL
-// ========================
-
-registry.registerPath({
-  method: "get",
-  path: "/panel_analytical/info_values_os_paid",
-  tags: ["Paineis de Analíticos"],
-  security,
-  responses: { 200: { description: "Soma de valores de OS pagas" } }
-});
-
-registry.registerPath({
-  method: "get",
-  path: "/panel_analytical/info_invoicing_liquid",
-  tags: ["Paineis de Analíticos"],
-  security,
-  responses: { 200: { description: "Faturamento líquido" } }
 });
 
 // ========================

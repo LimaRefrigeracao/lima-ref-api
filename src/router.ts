@@ -9,22 +9,18 @@ import OrderOfServiceController from './controllers/OrderOfServiceController.js'
 import StatusPaymentController from './controllers/StatusPaymentController.js';
 import StatusServiceController from './controllers/StatusServiceController.js';
 import TypesProductController from './controllers/TypesProductController.js';
-import PanelAnalyticalController from './controllers/PanelAnalyticalController.js';
 import ToolsController from './controllers/ToolsController.js';
-import ExpensesController from './controllers/ExpensesController.js';
 import TenantsController from './controllers/TenantsController';
 
 import AuthMiddleware from './middlewares/AuthMiddleware';
 import ValidateMiddleware from "./middlewares/ValidateMiddleware";
 
-import User from './models/Users';
 import Auth from './models/Auth.js';
 import Service from './models/Services';
 import OrderOfService from './models/OrderOfService';
 import StatusPayment from './models/StatusPayment';
 import StatusService from './models/StatusService';
 import TypeProduct from './models/TypesProduct';
-import Expense from './models/Expenses';
 import Tenant from './models/Tenants';
 
 const router = Router();
@@ -94,29 +90,6 @@ router.delete(
   '/tenants/:id',
   AuthMiddleware.authToken,
   TenantsController.remove
-);
-
-// ========================
-// EXPENSES
-// ========================
-
-router.get(
-  '/expenses',
-  AuthMiddleware.authToken,
-  ExpensesController.getAll
-);
-
-router.post(
-  '/expenses',
-  AuthMiddleware.authToken,
-  ValidateMiddleware.validateSchema(Expense.schema),
-  ExpensesController.create
-);
-
-router.delete(
-  '/expenses/:id',
-  AuthMiddleware.authToken,
-  ExpensesController.remove
 );
 
 // ========================
@@ -269,22 +242,6 @@ router.delete(
   '/types_product/:id',
   AuthMiddleware.authToken,
   TypesProductController.remove
-);
-
-// ========================
-// PANEL ANALYTICAL
-// ========================
-
-router.get(
-  '/panel_analytical/info_values_os_paid',
-  AuthMiddleware.authToken,
-  PanelAnalyticalController.getSumValuesOrdersPaid
-);
-
-router.get(
-  '/panel_analytical/info_invoicing_liquid',
-  AuthMiddleware.authToken,
-  PanelAnalyticalController.getValuesInvoicingLiquid
 );
 
 // ========================
