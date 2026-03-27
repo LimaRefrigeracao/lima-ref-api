@@ -1,7 +1,7 @@
 import UsersRepository from "../repositories/UsersRepository.js";
 import ValidationError from "../utils/ValidationError.js";
 import jwt from "jsonwebtoken";
-import bcrypt from "bcrypt";
+import argon2 from "argon2";
 
 export default class AuthService {
   static async register(user: any) {
@@ -19,9 +19,9 @@ export default class AuthService {
       throw new ValidationError("Este nome de usuário já está sendo utilizado.", 422);
     }
 
-    const salt = await bcrypt.genSalt(12);
-    const passwordHash = await bcrypt.hash(user.password, salt);
-    user.password = passwordHash;
+
+    // Hash da senha usando argon2
+    user.password = await argon2.hash(user.password);
 
     return UsersRepository.register(user);
   }
@@ -33,7 +33,8 @@ export default class AuthService {
     if (!userRow) {
       throw new ValidationError("Nome de usuário ou Senha incorreta.", 404);
     }
-    const checkPassword = await bcrypt.compare(user.password, userRow.password);
+
+    const checkPassword = await argon2.verify(userRow.password, user.password);
     if (!checkPassword) {
       throw new ValidationError("Nome de usuário ou Senha incorreta.", 404);
     }

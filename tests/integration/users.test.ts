@@ -2,12 +2,16 @@ import supertest from 'supertest';
 import { app } from '../../src/app';
 import connection from '../../src/database/connection';
 import jwt from 'jsonwebtoken';
-import * as bcrypt from 'bcrypt';
 
-jest.mock('bcrypt', () => ({
-  genSalt: jest.fn(() => Promise.resolve('salt')),
-  hash: jest.fn(() => Promise.resolve('hashed')),
-  compare: jest.fn(() => Promise.resolve(true))
+import * as argon2 from 'argon2';
+
+
+const fakeArgon2Hash = '$argon2id$v=19$m=65536,t=3,p=4$saltsalt$hashhashhashhashhashhashhashhash';
+jest.mock('argon2', () => ({
+  hash: jest.fn(() => Promise.resolve(fakeArgon2Hash)),
+  verify: jest.fn((hash, password) => Promise.resolve(
+    hash.startsWith('$argon2id$') && password === 'adminpassword'
+  ))
 }));
 
 beforeAll(() => {
