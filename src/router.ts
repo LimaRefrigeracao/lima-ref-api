@@ -11,6 +11,8 @@ import StatusServiceController from './controllers/StatusServiceController.js';
 import TypesProductController from './controllers/TypesProductController.js';
 import ToolsController from './controllers/ToolsController.js';
 import TenantsController from './controllers/TenantsController';
+import StockController from './controllers/StockController.js';
+
 
 import AuthMiddleware from './middlewares/AuthMiddleware';
 import ValidateMiddleware from "./middlewares/ValidateMiddleware";
@@ -22,6 +24,7 @@ import StatusPayment from './models/StatusPayment';
 import StatusService from './models/StatusService';
 import TypeProduct from './models/TypesProduct';
 import Tenant from './models/Tenants';
+import Stock from './models/Stock';
 
 const router = Router();
 const openApiDocument = generateOpenApiDocument();
@@ -243,6 +246,35 @@ router.delete(
   AuthMiddleware.authToken,
   TypesProductController.remove
 );
+
+// ========================
+// STOCK
+// ========================
+
+router.get(
+  '/stock',
+  AuthMiddleware.authToken,
+  StockController.getAll
+);
+
+router.post(
+  '/stock',
+  AuthMiddleware.authToken,
+  StockController.create
+);
+
+router.put(
+  '/stock/:id',
+  AuthMiddleware.authToken,
+  StockController.update
+);
+
+router.delete(
+  '/stock/:id',
+  AuthMiddleware.authToken,
+  StockController.remove
+);
+
 
 // ========================
 // TOOLS
