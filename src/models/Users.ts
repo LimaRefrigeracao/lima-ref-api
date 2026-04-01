@@ -36,6 +36,20 @@ export default class User {
     this.remember = remember;
   }
 
+  static fromRequest(body: any = {}) {
+    return new User({
+      id: body.id || null,
+      tenant_id: body.tenant_id || null,
+      username: body.username,
+      email: body.email,
+      password: body.password || null,
+      root: body.root || false,
+      admin: body.admin || false,
+      signature: body.signature || null,
+      remember: body.remember || false,
+    });
+  }
+
   static fromRequestParams(params: any = {}) {
     return new User({
       id: params.id
@@ -63,6 +77,16 @@ export default class User {
     admin: z.boolean().optional().openapi({ example: true }),
     signature: z.string().nullable().optional().openapi({ example: "data:image/png;base64,..." }),
   }).openapi("User");
+
+  static createSchema = z.object({
+    username: z.string().min(1, 'Nome de Usuário é obrigatório.').openapi({ example: "joao123" }),
+    email: z.string().email('Email é obrigatório e deve ser válido.').openapi({ example: "joao@operix.com.br" }),
+    password: z.string().min(6, 'Senha deve ter pelo menos 6 caracteres.').openapi({ example: "senha123" }),
+    tenant_id: z.number().nullable().optional().openapi({ example: 1 }),
+    root: z.boolean().optional().openapi({ example: false }),
+    admin: z.boolean().optional().openapi({ example: true }),
+    signature: z.string().nullable().optional().openapi({ example: "data:image/png;base64,..." }),
+  }).openapi("UserCreate");
 
   static responseSchema = z.object({
     success: z.boolean(),
