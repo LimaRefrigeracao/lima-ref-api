@@ -61,4 +61,21 @@ export default class Auth {
       })
     })
   }).openapi("AuthResponse");
+
+  static fromRequestParams(params: any = {}) {
+    return User.fromRequestParams(params);
+  }
+
+  toJSON() {
+    return {};
+  }
+
+  static schema = Auth.loginSchema;
+  static createSchema = Auth.registerSchema;
+
+  static listResponseSchema = z.object({
+    success: z.boolean(),
+    msg: z.string(),
+    data: z.array(Auth.responseSchema.shape.data)
+  }).openapi("AuthListResponse");
 }

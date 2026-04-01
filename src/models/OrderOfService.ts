@@ -58,6 +58,12 @@ export default class OrderOfService {
     created_at: z.string().nullable().optional().openapi({ example: "2023-11-01 10:00:00" }),
   }).openapi("OrderOfService");
 
+  static createSchema = z.object({
+    tenant_id: z.number().nullable().optional().openapi({ example: 1 }),
+    estimate: z.string().nullable().optional().openapi({ example: '[{"type":"peca","description":"Compressor","price":500,"amount":1}]' }),
+    value: z.number().openapi({ example: 500.00 })
+  }).openapi("OrderOfServiceCreate");
+
   static updateEstimateSchema = z.object({
     type: z.string().min(1, 'Campo "Tipo" é obrigatório.').openapi({ example: "peca" }),
     description: z.string().min(1, 'Campo "Descrição" é obrigatório.').openapi({ example: "Filtro de Ar" }),
