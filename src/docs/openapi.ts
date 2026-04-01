@@ -442,10 +442,6 @@ export function generateOpenApiDocument() {
       {
         url: 'http://localhost:3333',
         description: 'Desenvolvimento'
-      },
-      {
-        url: 'https://operix-service-api.cloudx.work',
-        description: "Produção"
       }
     ],
   });
